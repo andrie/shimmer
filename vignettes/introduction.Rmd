@@ -1,10 +1,10 @@
 ---
-title: "Introduction to simmer.shiny"
+title: "Simulating Shiny using the shimmer package"
 author: "Andrie de Vries"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Introduction to simmer.shiny}
+  %\VignetteIndexEntry{Simulating Shiny using the shimmer package}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

@@ -1,8 +1,8 @@
-Package: simmer.shiny
-Title: What the Package Does (one line, title case)
+Package: shimmer
+Title: Discrete Event Simulation for Shiny, Using the Simmer Package
 Version: 0.0.0.9000
 Authors@R: c(person("Andrie", "de Vries", role=c("aut", "cre", "cph"), email="apdevries@gmail.com"))
-Description: What the package does (one paragraph).
+Description: Discrete Event Simulation for Shiny, Using the Simmer Package.
 Depends: R (>= 3.4.4)
 License: MIT + file LICENSE
 Suggests: 
@@ -23,5 +23,6 @@ Imports:
     dplyr,
     assertthat,
     config,
-    shiny
+    shiny,
+    yaml
 VignetteBuilder: knitr

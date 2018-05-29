@@ -18,6 +18,8 @@ plot_shiny_resources <- function(.env){
 #' @export
 #' @family plot functions
 #'
+#' @importFrom ggplot2 theme facet_grid
+#'
 plot_shiny_usage <- function(.env){
   .env %>%
     get_mon_resources() %>%
@@ -25,7 +27,8 @@ plot_shiny_usage <- function(.env){
     plot(metric = "usage",
          steps = FALSE,
          items = c("server", "queue")) +
-    facet_grid(resource ~ ., scales = "free_y")
+    facet_grid(resource ~ ., scales = "free_y") +
+    theme(legend.position = "bottom")
 }
 
 

@@ -1,21 +1,46 @@
-#' Defines shiny simulation and runs for a specified period of time
+#' Defines the location of the example config.yml
+#'
+#' @export
+#' @seealso [simmer_shiny()]
+shimmer_config_file <- function(){
+  system.file("config.yml", package = "shimmer")
+}
+
+#' Defines shiny simulation and runs for a specified period of time.
+#'
+#' This uses the `simmer` package to set up a simulation run.
+#'
 #'
 #' @param until Time in seconds
-#' @param config_file Path to config file with runtime and app settings
+#' @param config Configuration parameters. If not provided, then attempts to read from the `config_file`
+#' @param config_file Path to config file with runtime and app settings.  If neither `config` nor `config_file` is provided, attempts to read from [shimmer_config_file()].
 #'
 #' @return a `simmer` environment
 #' @export
 #'
-simmer_shiny <- function(
-  until = 3600,
-  config_file = system.file("config.yml", package = "simmer.shiny")
-){
+#' @seealso [simmer_config_file()]
+#'
+shimmer <- function(until = 3600, config, config_file) {
 
-  assert_that(file.exists(config_file))
+  if (missing(config) && missing(config_file)) {
+    message("You must specify either config or a valid config_file.\n",
+            "Using the built-in config file.")
+    config_file <-  shimmer_config_file()
+    assert_that(file.exists(config_file))
+    params <- config::get(file = config_file)
+  }
+
+  if (missing(config)) {
+    config_file <-  shimmer_config_file()
+    assert_that(file.exists(config_file))
+    params <- config::get(file = config_file)
+  } else {
+    params <- config
+  }
+
 
   select <- simmer::select
 
-  params <- config::get(file = config_file)
 
 
   env <- simmer("Shiny")

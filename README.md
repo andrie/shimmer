@@ -1,14 +1,16 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# simmer.shiny
+# shimmer
 
-The `simmer.shiny` package contains a discrete event simulation that
-explores how `shiny` processes behave at scale, typically orchestrated
-by RStudio Connect or Shiny Server Pro.
+The `shimmer` package contains a discrete event simulation that explores
+how `shiny` processes behave at scale, typically orchestrated by RStudio
+Connect or Shiny Server Pro.
 
-The `simmer` package for discrete event simulations provides the
-underlying infrastructure of the simulation.
+The underlying infrastructure of the simulation is provided by the
+`simmer` package for discrete event simulations provides. In other
+words, `shimmer` simulates Shiny app scaling using the `simmer`
+simulation framework.
 
 ## Installation
 
@@ -20,17 +22,17 @@ install.packages("pkg")
 ```
 
 And the development version from
-[GitHub](https://github.com/andrie/simmer.shiny) with:
+[GitHub](https://github.com/andrie/shimmer) with:
 
 ``` r
 # install.packages("devtools")
-devtools::install_github("andrie/simmer.shiny")
+devtools::install_github("andrie/shimmer")
 ```
 
 ## Example
 
-The `simmer.shiny` package uses discrete event simulation to help answer
-the questions:
+The `shimmer` package uses discrete event simulation to help answer the
+questions:
 
   - How big should my Shiny server be to handle `n` number of users?
   - For a given size of server, how many users can Shiny handle?
@@ -44,18 +46,18 @@ intuition about the problem, prior to building and testing an app.
 ## The `simmer` package
 
 The `simmer` package makes it easy to build discrete event simulations
-in R. The `simmer.shiny` package uses `simmer` under the hood for
-defining and running the simulation.
+in R. The `shimmer` package uses `simmer` under the hood for defining
+and running the simulation.
 
 ## Setting up the simulation
 
-The `simmer.shiny` function reads a configuration file using the
+The `shimmer` function reads a configuration file using the
 `config::get()` function. The package contains a default configuration
 file at:
 
 ``` r
-system.file("config.yml", package = "simmer.shiny")
-#> [1] "C:/Users/apdev/Documents/R/win-library/3.4/simmer.shiny/config.yml"
+system.file("config.yml", package = "shimmer")
+#> [1] "C:/Users/apdev/Documents/R/win-library/3.4/shimmer/config.yml"
 ```
 
 The contents of this file:
@@ -75,10 +77,10 @@ The contents of this file:
         reponse_time: 2.0
       user:
         arrival:
-          mean: 30.0
-          sd: 10.0
-        request:
           mean: 10.0
+          sd: 2.0
+        request:
+          mean: 5.0
           sd: 2.0
         number_of_requests: 10.0
       system:
@@ -88,25 +90,27 @@ The contents of this file:
 
 ``` r
 library(magrittr)
-library(simmer.shiny)
+library(shimmer)
 ```
 
 By default, the simulation runs for an hour (3,600 seconds):
 
 ``` r
 env <- simmer_shiny()
+#> You must specify either config or a valid config_file.
+#> Using the built-in config file.
 env
 #> simmer environment: Shiny | now: 3600 | next: 3600
 #> { Monitor: in memory }
-#> { Resource: connection_request | monitored: TRUE | server status: 21(60) | queue status: 0(0) }
-#> { Resource: rejections | monitored: TRUE | server status: 0(Inf) | queue status: 0(0) }
-#> { Resource: connection | monitored: TRUE | server status: 21(60) | queue status: 0(Inf) }
+#> { Resource: connection_request | monitored: TRUE | server status: 57(60) | queue status: 0(0) }
+#> { Resource: rejections | monitored: TRUE | server status: 32(Inf) | queue status: 0(0) }
+#> { Resource: connection | monitored: TRUE | server status: 57(60) | queue status: 0(Inf) }
 #> { Resource: cpu | monitored: TRUE | server status: 0(4) | queue status: 0(Inf) }
-#> { Resource: process_1 | monitored: TRUE | server status: 6(20) | queue status: 0(0) }
-#> { Resource: process_2 | monitored: TRUE | server status: 8(20) | queue status: 0(0) }
-#> { Resource: process_3 | monitored: TRUE | server status: 7(20) | queue status: 0(0) }
+#> { Resource: process_1 | monitored: TRUE | server status: 19(20) | queue status: 0(0) }
+#> { Resource: process_2 | monitored: TRUE | server status: 20(20) | queue status: 0(0) }
+#> { Resource: process_3 | monitored: TRUE | server status: 18(20) | queue status: 0(0) }
 #> { Source: controller | monitored: 1 | n_generated: 1 }
-#> { Source: user | monitored: 1 | n_generated: 123 }
+#> { Source: user | monitored: 1 | n_generated: 360 }
 ```
 
 ## Plots

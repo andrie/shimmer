@@ -1,4 +1,4 @@
 library(testthat)
-library(simmer.shiny)
+library(shimmer)
 
-test_check("simmer.shiny")
+test_check("shimmer")

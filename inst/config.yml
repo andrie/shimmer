@@ -13,10 +13,10 @@ default:
     reponse_time: 2.0
   user:
     arrival:
-      mean: 30.0
-      sd: 10.0
-    request:
       mean: 10.0
+      sd: 2.0
+    request:
+      mean: 5.0
       sd: 2.0
     number_of_requests: 10.0
   system:

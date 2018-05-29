@@ -1,4 +1,4 @@
-The `simmer.shiny` package uses discrete event simulation to help answer the questions:
+The `shimmer` package uses discrete event simulation to help answer the questions:
 
   * How big should my Shiny server be to handle `n` number of users?
   * For a given size of server, how many users can Shiny handle?
@@ -9,20 +9,20 @@ The `simmer.shiny` package uses discrete event simulation to help answer the que
 
 ## The `simmer` package
 
-The `simmer` package makes it easy to build discrete event simulations in R. The `simmer.shiny` package uses `simmer` under the hood for defining and running the simulation.
+The `simmer` package makes it easy to build discrete event simulations in R. The `shimmer` package uses `simmer` under the hood for defining and running the simulation.
 
 ## Setting up the simulation
 
-The `simmer.shiny` function reads a configuration file using the `config::get()` function.  The package contains a default configuration file at:
+The `shimmer` function reads a configuration file using the `config::get()` function.  The package contains a default configuration file at:
 
   ```{r}
-system.file("config.yml", package = "simmer.shiny")
+system.file("config.yml", package = "shimmer")
 ```
 
 The contents of this file:
 
   ```{r, echo=FALSE, comment = ""}
-f <- readLines(system.file("config.yml", package = "simmer.shiny"))
+f <- readLines(system.file("config.yml", package = "shimmer"))
 cat(f, sep = "\n")
 ```
 
@@ -31,7 +31,7 @@ cat(f, sep = "\n")
 
 ```{r}
 library(magrittr)
-library(simmer.shiny)
+library(shimmer)
 ```
 
 By default, the simulation runs for an hour (3,600 seconds):

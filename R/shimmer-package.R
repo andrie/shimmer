@@ -1,5 +1,4 @@
-#' @name miniCRAN-package
-#' @aliases miniCRAN minicran
+#' @name shimmer-package
 #' @docType package
 #'
 #' @importFrom config get

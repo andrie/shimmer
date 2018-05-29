@@ -1,25 +1,34 @@
 if (interactive()) library(testthat)
 
-context("simmer_shiny")
+context("shimmer")
 
-test_that("simmer_shiny() returns an env", {
+test_that("shimmer() returns an env", {
 
-  conf_file <- system.file("config.yml", package = "simmer.shiny")
+  conf_file <- shimmer_config_file()
   expect_true(file.exists(conf_file))
 
   y <- yaml::read_yaml(conf_file)
   expect_is(y, "list")
 
-  z <- simmer_shiny(0)
+  z <- shimmer(0)
   expect_is(z, "simmer")
 
-  z <- simmer_shiny(100)
+  z <- shimmer(100)
   expect_is(z, "simmer")
+
+  z <- shimmer(100, config_file = conf_file)
+  expect_is(z, "simmer")
+
+
+  z <- shimmer(100, config = yaml::read_yaml(conf_file)$default )
+  expect_is(z, "simmer")
+
+
 })
 
 
-test_that("plotting simmer_shiny() returns ggplot objects", {
-  z <- simmer_shiny(100)
+test_that("plotting shimmer() returns ggplot objects", {
+  z <- shimmer(100)
 
   r <- simmer::get_mon_resources(z)
   expect_is(r, "data.frame")
@@ -35,3 +44,5 @@ test_that("plotting simmer_shiny() returns ggplot objects", {
 
 
 })
+
+

@@ -1,0 +1,63 @@
+#
+# This is the user-interface definition of a Shiny web application. You can
+# run the application by clicking 'Run App' above.
+#
+# Find out more about building applications with Shiny here:
+#
+#    http://shiny.rstudio.com/
+#
+
+# max_processes: 3
+# min_processes: 0
+# max_connections_per_process: 20
+# load_factor: 0.5
+# idle_timeout_per_process: 5.0
+# initial_timeout: 300
+# connection_timeout: 3600
+# read_timeout: 3600
+
+
+library(shiny)
+
+# Define UI for application that draws a histogram
+shinyUI(fluidPage(
+
+  # Application title
+  titlePanel("Shimmer: Shiny sizing simulation"),
+
+  # Sidebar with a slider input for number of bins
+  sidebarLayout(
+    sidebarPanel(
+      sliderInput("processes",
+                  "min_processes and max_processes:",
+                  min = 0,
+                  max = 20,
+                  value = c(0, 3)),
+      sliderInput("max_connections_per_process",
+                  "max_connections_per_process:",
+                  min = 1,
+                  max = 50,
+                  value = 20),
+      sliderInput("load_factor",
+                  "load_factor:",
+                  min = 0,
+                  max = 1,
+                  value = 0.5,
+                  step = 0.1),
+      sliderInput("cpu",
+                  "cpu count:",
+                  min = 1,
+                  max = 8,
+                  value = 4)
+
+    ),
+
+    # Show a plot of the generated distribution
+    mainPanel(
+      plotOutput("resource_plot"),
+      plotOutput("usage_plot"),
+      plotOutput("cpu_histogram")
+
+    )
+  )
+))
