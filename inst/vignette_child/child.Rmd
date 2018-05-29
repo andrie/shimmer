@@ -1,0 +1,61 @@
+The `simmer.shiny` package uses discrete event simulation to help answer the questions:
+
+  * How big should my Shiny server be to handle `n` number of users?
+  * For a given size of server, how many users can Shiny handle?
+  * How should I tune the runtime parameters in RStudio Connect for my app?
+
+  The robust answer to this question is to use `shinyloadtest`, but for planning purposes you may want to rapidly develop some hypotheses and intuition about the problem, prior to building and testing an app.
+
+
+## The `simmer` package
+
+The `simmer` package makes it easy to build discrete event simulations in R. The `simmer.shiny` package uses `simmer` under the hood for defining and running the simulation.
+
+## Setting up the simulation
+
+The `simmer.shiny` function reads a configuration file using the `config::get()` function.  The package contains a default configuration file at:
+
+  ```{r}
+system.file("config.yml", package = "simmer.shiny")
+```
+
+The contents of this file:
+
+  ```{r, echo=FALSE, comment = ""}
+f <- readLines(system.file("config.yml", package = "simmer.shiny"))
+cat(f, sep = "\n")
+```
+
+## Run the simulation
+
+
+```{r}
+library(magrittr)
+library(simmer.shiny)
+```
+
+By default, the simulation runs for an hour (3,600 seconds):
+
+  ```{r}
+env <- simmer_shiny()
+env
+```
+
+
+## Plots
+
+```{r}
+env %>%
+  plot_shiny_usage()
+```
+
+```{r}
+env %>%
+  plot_shiny_resources()
+```
+
+```{r}
+env %>%
+  plot_shiny_cpu_histogram()
+```
+

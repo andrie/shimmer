@@ -34,9 +34,5 @@ devtools::install_github("andrie/simmer.shiny")
 ```
 ## Example
 
-This is a basic example which shows you how to solve a common problem:
-
-```{r example}
-## basic example code
+```{r, child = rprojroot::find_package_root_file("inst/vignette_child/child.Rmd")}
 ```
-
