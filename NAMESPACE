@@ -3,6 +3,7 @@
 export(plot_shiny_cpu_histogram)
 export(plot_shiny_resources)
 export(plot_shiny_usage)
+export(run_example)
 export(simmer_shiny)
 importFrom(assertthat,assert_that)
 importFrom(config,get)
