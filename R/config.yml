@@ -1,0 +1,23 @@
+default:
+  runtime:
+    max_processes: 3
+    min_processes: 0
+    max_connections_per_process: 20
+    load_factor: 0.5
+    idle_timeout_per_process: 5.0
+    initial_timeout: 300
+    connection_timeout: 3600
+    read_timeout: 3600
+  app:
+    startup_time: 5.0
+    reponse_time: 2.0
+  user:
+    arrival:
+      mean = 30.0
+      sd = 10
+    request:
+      mean = 10
+      sd = 2
+    number_of_requests: 10
+  system:
+    cpu: 4.0

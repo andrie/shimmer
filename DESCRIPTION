@@ -1,0 +1,25 @@
+Package: simmer.shiny
+Title: What the Package Does (one line, title case)
+Version: 0.0.0.9000
+Authors@R: c(person("Andrie", "de Vries", role=c("aut", "cre", "cph"), email="apdevries@gmail.com"))
+Description: What the package does (one paragraph).
+Depends: R (>= 3.4.4)
+License: MIT + file LICENSE
+Suggests: 
+    rmarkdown, 
+    knitr, 
+    testthat, 
+    covr, 
+    withr
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 6.0.1
+Roxygen: list(markdown = TRUE)
+Imports: 
+    simmer,
+    simmer.plot,
+    ggplot2,
+    dplyr,
+    assertthat,
+    config
+VignetteBuilder: knitr

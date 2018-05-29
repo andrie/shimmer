@@ -1,0 +1,59 @@
+---
+title: "Introduction to simmer.shiny"
+author: "Andrie de Vries"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Introduction to simmer.shiny}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+The `simmer.shiny` package uses discrete event simulation to help answer the questions:
+
+* How big should my Shiny server be to handle `n` number of users?
+* For a given size of server, how many users can Shiny handle?
+* How should I tune the runtime parameters in RStudio Connect for my app?
+
+The robust answer to this question is to use `shinyloadtest`, but for planning purposes you may want to rapidly develop some hypotheses and intuition about the problem, prior to building and testing an app.
+
+
+## The `simmer` package
+
+The `simmer` package makes it easy to build discrete event simulations in R. The `simmer.shiny` package uses `simmer` under the hood for defining and running the simulation.
+
+## Run the simulation
+
+
+```{r, fig.show='hold'}
+library(simmer.shiny)
+simmer_shiny()
+```
+
+You can enable figure captions by `fig_caption: yes` in YAML:
+
+    output:
+      rmarkdown::html_vignette:
+        fig_caption: yes
+
+Then you can use the chunk option `fig.cap = "Your figure caption."` in **knitr**.
+
+## More Examples
+
+You can write math expressions, e.g. $Y = X\beta + \epsilon$, footnotes^[A footnote here.], and tables, e.g. using `knitr::kable()`.
+
+```{r, echo=FALSE, results='asis'}
+knitr::kable(head(mtcars, 10))
+```
+
+Also a quote using `>`:
+
+> "He who gives up [code] safety for [code] speed deserves neither."
+([via](https://twitter.com/hadleywickham/status/504368538874703872))
