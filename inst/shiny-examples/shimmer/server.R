@@ -8,12 +8,13 @@
 #
 
 library(shiny)
+library(shinydashboard)
 
 # Define server logic required to draw a histogram
 shinyServer(function(input, output) {
 
 
-  params_default <- simmer_config_file() %>%
+  params_default <- shimmer_config_file() %>%
     yaml::read_yaml() %>%
     .$default
 
@@ -37,7 +38,7 @@ shinyServer(function(input, output) {
         ))
     )
 
-    simmer_shiny(config = params)
+    shimmer(config = params)
 
   })
 

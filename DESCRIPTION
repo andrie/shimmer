@@ -24,5 +24,6 @@ Imports:
     assertthat,
     config,
     shiny,
-    yaml
+    yaml,
+    shinydashboard
 VignetteBuilder: knitr

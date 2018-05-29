@@ -18,46 +18,68 @@
 
 
 library(shiny)
+library(shinydashboard)
 
 # Define UI for application that draws a histogram
-shinyUI(fluidPage(
 
-  # Application title
-  titlePanel("Shimmer: Shiny sizing simulation"),
-
-  # Sidebar with a slider input for number of bins
-  sidebarLayout(
-    sidebarPanel(
-      sliderInput("processes",
-                  "min_processes and max_processes:",
-                  min = 0,
-                  max = 20,
-                  value = c(0, 3)),
-      sliderInput("max_connections_per_process",
-                  "max_connections_per_process:",
-                  min = 1,
-                  max = 50,
-                  value = 20),
-      sliderInput("load_factor",
-                  "load_factor:",
-                  min = 0,
-                  max = 1,
-                  value = 0.5,
-                  step = 0.1),
-      sliderInput("cpu",
-                  "cpu count:",
-                  min = 1,
-                  max = 8,
-                  value = 4)
-
-    ),
-
-    # Show a plot of the generated distribution
-    mainPanel(
-      plotOutput("resource_plot"),
-      plotOutput("usage_plot"),
-      plotOutput("cpu_histogram")
-
+dashboardPage(
+  dashboardHeader(title = "Shimmer: Shiny sizing simulation"),
+  dashboardSidebar(),
+  dashboardBody(
+    tabItem(
+      tabName = "dashboard",
+      fluidRow(
+        box(
+          width = 3,
+          sliderInput("processes",
+                      "min_processes and max_processes:",
+                      min = 0,
+                      max = 20,
+                      value = c(0, 3))
+        ),
+        box(
+          width = 3,
+          sliderInput("max_connections_per_process",
+                      "max_connections_per_process:",
+                      min = 1,
+                      max = 50,
+                      value = 20)
+        ),
+        box(
+          width = 3,
+          sliderInput("load_factor",
+                      "load_factor:",
+                      min = 0,
+                      max = 1,
+                      value = 0.5,
+                      step = 0.1)
+        ),
+        box(
+          width = 3,
+          sliderInput("cpu",
+                      "cpu count:",
+                      min = 1,
+                      max = 8,
+                      value = 4)
+        ),
+        fluidRow(
+          box(
+            width = 4,
+            plotOutput("resource_plot")
+          ),
+          box(
+            width = 4,
+            plotOutput("usage_plot")
+          ),
+          box(
+            width = 4,
+            plotOutput("cpu_histogram")
+          )
+        )
+      )
     )
   )
-))
+)
+
+
+
