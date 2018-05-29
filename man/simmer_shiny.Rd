@@ -4,13 +4,13 @@
 \alias{simmer_shiny}
 \title{Defines shiny simulation and runs for a specified period of time}
 \usage{
-simmer_shiny(until = 3600, config = system.file("R/config.yml", package =
-  "simmer.shiny"))
+simmer_shiny(until = 3600, config_file = system.file("R/config.yml", package
+  = "simmer.shiny"))
 }
 \arguments{
 \item{until}{Time in seconds}
 
-\item{config}{Path to config file with runtime and app settings}
+\item{config_file}{Path to config file with runtime and app settings}
 }
 \value{
 a \code{simmer} environment

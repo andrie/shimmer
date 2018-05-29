@@ -7,7 +7,7 @@
 #'
 plot_shiny_resources <- function(.env){
   .env %>%
-    get_mon_resources()
+    get_mon_resources() %>%
   plot(metric = "utilization")
 }
 
@@ -40,8 +40,8 @@ plot_shiny_usage <- function(.env){
 plot_shiny_cpu_histogram <- function(.env, binwidth = 0.1){
   .env %>%
     get_mon_arrivals(per_resource = TRUE) %>%
-    filter(resource == "cpu") %>%
-    mutate(duration = end_time - start_time) %>%
+    dplyr::filter(resource == "cpu") %>%
+    dplyr::mutate(duration = end_time - start_time) %>%
     ggplot(aes(x = duration)) +
     geom_histogram(binwidth = binwidth)
 }

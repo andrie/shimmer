@@ -1,29 +1,28 @@
-# assert_that <- assertthat::assert_that
-
-
 #' Defines shiny simulation and runs for a specified period of time
 #'
 #' @param until Time in seconds
-#' @param config Path to config file with runtime and app settings
+#' @param config_file Path to config file with runtime and app settings
 #'
 #' @return a `simmer` environment
 #' @export
 #'
 simmer_shiny <- function(
   until = 3600,
-  config = system.file("R/config.yml", package = "simmer.shiny")
+  config_file = system.file("config.yml", package = "simmer.shiny")
 ){
 
-  assert_that(file.exists(config))
+  assert_that(file.exists(config_file))
 
   select <- simmer::select
 
-  params <- config::get(file = config)
+  params <- config::get(file = config_file)
 
 
   env <- simmer("Shiny")
   RUNTIME <- params[["runtime"]]
   USER <- params[["user"]]
+  SYSTEM <- params[["system"]]
+  APP <- params[["app"]]
 
   total_allowed_connections <- with(
     RUNTIME,
@@ -144,7 +143,7 @@ simmer_shiny <- function(
     join(cpu) %>%
 
     # time out for response
-    timeout(function() params$app$reponse_time) %>%
+    timeout(function() APP$reponse_time) %>%
     rollback(
       get_n_activities(cpu) + 1,
       times = USER$number_of_requests - 1
@@ -172,7 +171,7 @@ simmer_shiny <- function(
                  capacity = total_allowed_connections,
                  queue_size = Inf) %>%
     add_resource("cpu",
-                 capacity = 6,
+                 capacity = SYSTEM$cpu,
                  queue_size = Inf) %>%
     add_generator("controller",
                   controller, at(0)) %>%
