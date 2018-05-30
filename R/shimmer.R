@@ -1,3 +1,5 @@
+
+
 #' Defines the location of the example config.yml
 #'
 #' @export
@@ -56,6 +58,7 @@ shimmer <- function(until = 3600, config, config_file) {
 
 
   ACTIVE_CONNECTIONS <-  0
+  TOTAL_CONNECTIONS <- 0
   ACTIVE_PROCESSES <-  0
 
   rectified_rnorm <- function(n, mean = 0, sd = 1){
@@ -76,7 +79,7 @@ shimmer <- function(until = 3600, config, config_file) {
 
   cpu <- trajectory("cpu") %>%
     seize("cpu") %>%
-    timeout(params$app$reponse_time) %>%
+    timeout(APP$reponse_time) %>%
     release("cpu")
 
 
@@ -141,6 +144,7 @@ shimmer <- function(until = 3600, config, config_file) {
 
   inc_active_connections <- function(){
     ACTIVE_CONNECTIONS <<- ACTIVE_CONNECTIONS + 1
+    TOTAL_CONNECTIONS <<- TOTAL_CONNECTIONS + 1
     return(1)
   }
 
@@ -150,15 +154,7 @@ shimmer <- function(until = 3600, config, config_file) {
   }
 
 
-  user <- trajectory("users") %>%
-    seize("connection_request",
-          amount = inc_active_connections,
-          continue = FALSE,
-          reject = trajectory() %>%
-            seize("rejections") %>%
-            timeout(until) %>%
-            release("rejections")
-    ) %>%
+  user <- trajectory("user") %>%
     seize("connection") %>%
 
     # select process
@@ -167,20 +163,33 @@ shimmer <- function(until = 3600, config, config_file) {
     seize_selected() %>%
     join(cpu) %>%
 
-    # time out for response
-    timeout(function() APP$reponse_time) %>%
+    # time out waiting for next request
+    timeout(function() agamma(1, mean = USER$request$mean, shape = USER$request$shape)) %>%
     rollback(
       get_n_activities(cpu) + 1,
       times = USER$number_of_requests - 1
     ) %>%
 
     # time out for idle connection
-    timeout(function() rectified_rnorm(1, mean = 600, sd = 30)) %>%
+    timeout(function() rectified_rnorm(1, mean = USER$idle$mean, sd = USER$idle$sd)) %>%
     release_selected() %>%
 
-    release("connection",
-            amount = dec_active_connections) %>%
-    release("connection_request")
+    release("connection")
+
+
+  user_accounting <- trajectory("accounting") %>%
+    seize("connection_request",
+          amount = inc_active_connections,
+          continue = FALSE,
+          reject = trajectory() %>%
+            seize("rejections") %>%
+            timeout(until) %>%
+            release("rejections")
+    ) %>%
+    join(user) %>%
+    release("connection_request",
+            amount = dec_active_connections
+    )
 
 
   ## Run the simulation ---------------------------------------------------
@@ -200,12 +209,9 @@ shimmer <- function(until = 3600, config, config_file) {
                  queue_size = Inf) %>%
     add_generator("controller",
                   controller, at(0)) %>%
-    add_generator("user", user,
+    add_generator("user_accounting", user_accounting,
                   distribution = function() {
-                    rectified_rnorm(1,
-                                    mean = USER$arrival$mean,
-                                    sd = USER$arrival$sd
-                    )
+                    agamma(1, shape = USER$arrival$shape, mean = USER$arrival$mean)
                   }
     ) %>%
     run(until)
