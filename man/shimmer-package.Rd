@@ -2,13 +2,8 @@
 % Please edit documentation in R/shimmer-package.R
 \docType{package}
 \name{shimmer-package}
-\alias{shimmer}
 \alias{shimmer-package}
-\title{shimmer: Discrete Event Simulation for Shiny, Using the Simmer Package}
+\title{Discrete Event Simulation for Scaling Shiny, Using the Simmer Package}
 \description{
-Discrete Event Simulation for Shiny, Using the Simmer Package.
-}
-\author{
-\strong{Maintainer}: Andrie de Vries \email{apdevries@gmail.com} [copyright holder]
-
+Discrete Event Simulation for Scaling Shiny, Using the Simmer Package
 }

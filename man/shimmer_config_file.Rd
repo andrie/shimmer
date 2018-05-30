@@ -10,5 +10,5 @@ shimmer_config_file()
 Defines the location of the example config.yml
 }
 \seealso{
-\code{\link[=simmer_shiny]{simmer_shiny()}}
+\code{\link[=shimmer]{shimmer()}}
 }

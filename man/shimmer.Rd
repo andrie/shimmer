@@ -20,5 +20,5 @@ a \code{simmer} environment
 This uses the \code{simmer} package to set up a simulation run.
 }
 \seealso{
-\code{\link[=simmer_config_file]{simmer_config_file()}}
+\code{\link[=shimmer_config_file]{shimmer_config_file()}}
 }
