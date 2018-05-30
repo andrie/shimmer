@@ -32,7 +32,7 @@ install.packages("pkg")
 ```
 -->
 
-... but you can instll the development version from [GitHub](https://github.com/andrie/shimmer) using:
+... but you can install the development version from [GitHub](https://github.com/andrie/shimmer) using:
 
 ``` r
 # install.packages("devtools")

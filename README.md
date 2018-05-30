@@ -26,7 +26,7 @@ install.packages("pkg")
 ```
 -->
 
-… but you can instll the development version from
+… but you can install the development version from
 [GitHub](https://github.com/andrie/shimmer) using:
 
 ``` r
@@ -83,10 +83,13 @@ The contents of this file:
       user:
         arrival:
           mean: 10.0
-          sd: 2.0
+          shape: 5.0
         request:
-          mean: 5.0
-          sd: 2.0
+          mean: 10.0
+          shape: 5.0
+        idle:
+          mean: 1800
+          sd: 600
         number_of_requests: 10.0
       system:
         cpu: 4.0
@@ -107,15 +110,15 @@ env <- shimmer()
 env
 #> simmer environment: Shiny | now: 3600 | next: 3600
 #> { Monitor: in memory }
-#> { Resource: connection_request | monitored: TRUE | server status: 58(60) | queue status: 0(0) }
-#> { Resource: rejections | monitored: TRUE | server status: 29(Inf) | queue status: 0(0) }
-#> { Resource: connection | monitored: TRUE | server status: 58(60) | queue status: 0(Inf) }
-#> { Resource: cpu | monitored: TRUE | server status: 1(4) | queue status: 0(Inf) }
+#> { Resource: connection_request | monitored: TRUE | server status: 60(60) | queue status: 0(0) }
+#> { Resource: rejections | monitored: TRUE | server status: 212(Inf) | queue status: 0(0) }
+#> { Resource: connection | monitored: TRUE | server status: 60(60) | queue status: 0(Inf) }
+#> { Resource: cpu | monitored: TRUE | server status: 0(4) | queue status: 0(Inf) }
 #> { Resource: process_1 | monitored: TRUE | server status: 20(20) | queue status: 0(0) }
-#> { Resource: process_2 | monitored: TRUE | server status: 19(20) | queue status: 0(0) }
-#> { Resource: process_3 | monitored: TRUE | server status: 19(20) | queue status: 0(0) }
+#> { Resource: process_2 | monitored: TRUE | server status: 20(20) | queue status: 0(0) }
+#> { Resource: process_3 | monitored: TRUE | server status: 20(20) | queue status: 0(0) }
 #> { Source: controller | monitored: 1 | n_generated: 1 }
-#> { Source: user | monitored: 1 | n_generated: 360 }
+#> { Source: user_accounting | monitored: 1 | n_generated: 352 }
 ```
 
 ## Plots
@@ -129,14 +132,28 @@ env %>%
 
 ``` r
 env %>%
-  plot_shimmer_resources()
+  plot_shimmer_connection_usage()
 ```
 
 <img src="man/figures/README-unnamed-chunk-7-1.png" width="100%" />
 
 ``` r
 env %>%
-  plot_shimmer_cpu_histogram()
+  plot_shimmer_rejection_usage()
 ```
 
 <img src="man/figures/README-unnamed-chunk-8-1.png" width="100%" />
+
+``` r
+env %>%
+  plot_shimmer_process_usage()
+```
+
+<img src="man/figures/README-unnamed-chunk-9-1.png" width="100%" />
+
+``` r
+env %>%
+  plot_shimmer_response_histogram()
+```
+
+<img src="man/figures/README-unnamed-chunk-10-1.png" width="100%" />

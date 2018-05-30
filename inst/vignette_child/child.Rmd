@@ -51,11 +51,20 @@ env %>%
 
 ```{r}
 env %>%
-  plot_shimmer_resources()
+  plot_shimmer_connection_usage()
+```
+```{r}
+env %>%
+  plot_shimmer_rejection_usage()
 ```
 
 ```{r}
 env %>%
-  plot_shimmer_cpu_histogram()
+  plot_shimmer_process_usage()
+```
+
+```{r}
+env %>%
+  plot_shimmer_response_histogram()
 ```
 
