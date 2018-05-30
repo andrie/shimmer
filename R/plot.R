@@ -1,3 +1,6 @@
+globalVariables(c(".", "resource", "end_time", "start_time", "duration"))
+
+
 #' Plot shiny resources
 #'
 #' @param .env A `simmer` environment, as defined by [shimmer()]
@@ -11,7 +14,6 @@ plot_shimmer_resources <- function(.env){
   plot(metric = "utilization")
 }
 
-globalVariables(c(".", "resource", "end_time", "start_time", "duration"))
 
 #' Plot shimmer resource usage
 #'
@@ -36,7 +38,7 @@ plot_shimmer_usage <- function(.env){
 
 #' Plot shimmer cpu usage
 #'
-#' @inheritParams plot_shimmer_cpu_usage
+#' @inheritParams plot_shimmer_resources
 #'
 #' @export
 #' @family plot functions
@@ -56,7 +58,7 @@ plot_shimmer_cpu_usage <- function(.env){
 
 #' Plot shimmer connection usage
 #'
-#' @inheritParams plot_shimmer_cpu_usage
+#' @inheritParams plot_shimmer_resources
 #'
 #' @export
 #' @family plot functions
@@ -76,7 +78,7 @@ plot_shimmer_connection_usage <- function(.env){
 
 #' Plot shimmer rejections
 #'
-#' @inheritParams plot_shimmer_cpu_usage
+#' @inheritParams plot_shimmer_resources
 #'
 #' @export
 #' @family plot functions
@@ -97,7 +99,7 @@ plot_shimmer_rejection_usage <- function(.env){
 
 #' Plot shimmer process usage
 #'
-#' @inheritParams plot_shimmer_process_usage
+#' @inheritParams plot_shimmer_resources
 #'
 #' @export
 #' @family plot functions

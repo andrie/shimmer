@@ -6,6 +6,9 @@
 \usage{
 plot_shimmer_rejection_usage(.env)
 }
+\arguments{
+\item{.env}{A \code{simmer} environment, as defined by \code{\link[=shimmer]{shimmer()}}}
+}
 \description{
 Plot shimmer rejections
 }

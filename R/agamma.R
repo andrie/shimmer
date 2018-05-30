@@ -2,11 +2,12 @@
 #'
 #' Refer to the help for [rgamma()] for the meaning of `shape` and `scale`.
 #'
+#' @param n Number of observations, passed to [rgamma()]
 #' @param mean mean
 #' @param shape shape
 #'
 #' @export
 agamma <- function(n, mean, shape){
   scale <- mean / shape
-  rgamma(n, shape = shape, scale = scale)
+  stats::rgamma(n, shape = shape, scale = scale)
 }

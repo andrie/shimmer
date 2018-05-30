@@ -7,6 +7,8 @@
 agamma(n, mean, shape)
 }
 \arguments{
+\item{n}{Number of observations, passed to \code{\link[=rgamma]{rgamma()}}}
+
 \item{mean}{mean}
 
 \item{shape}{shape}
