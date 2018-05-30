@@ -36,8 +36,8 @@ library(shimmer)
 
 By default, the simulation runs for an hour (3,600 seconds):
 
-  ```{r}
-env <- simmer_shiny()
+```{r}
+env <- shimmer()
 env
 ```
 
@@ -46,16 +46,16 @@ env
 
 ```{r}
 env %>%
-  plot_shiny_usage()
+  plot_shimmer_usage()
 ```
 
 ```{r}
 env %>%
-  plot_shiny_resources()
+  plot_shimmer_resources()
 ```
 
 ```{r}
 env %>%
-  plot_shiny_cpu_histogram()
+  plot_shimmer_cpu_histogram()
 ```
 
