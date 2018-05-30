@@ -1,5 +1,5 @@
 Package: shimmer
-Title: Discrete Event Simulation for Shiny, Using the Simmer Package
+Title: Discrete Event Simulation for Scaling Shiny, Using the Simmer Package
 Version: 0.0.0.9000
 Authors@R: c(person("Andrie", "de Vries", role=c("aut", "cre", "cph"), email="apdevries@gmail.com"))
 Description: Discrete Event Simulation for Shiny, Using the Simmer Package.
@@ -20,6 +20,7 @@ Imports:
     simmer,
     simmer.plot,
     ggplot2,
+    magrittr,
     dplyr,
     assertthat,
     config,
