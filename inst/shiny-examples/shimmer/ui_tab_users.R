@@ -1,9 +1,4 @@
 
-user_defaults <- list(
-  user_mean = c(0, 60),
-  request_mean = c(0, 60)
-)
-
 
 ui_tab_users <- tabItem(
   tabName = "users",
@@ -17,12 +12,6 @@ ui_tab_users <- tabItem(
                   max = user_defaults$user_mean[2],
                   value = c(30)
       ),
-      # sliderInput("user_sd",
-      #             "standard deviation:",
-      #             min = 0,
-      #             max = 50,
-      #             value = 10
-      # ),
       sliderInput("user_shape",
                   "shape:",
                   min = 1,
@@ -39,19 +28,13 @@ ui_tab_users <- tabItem(
                   max = user_defaults$request_mean[2],
                   value = c(10)
       ),
-      # sliderInput("request_sd",
-      #             "standard deviation:",
-      #             min = 0,
-      #             max = 50,
-      #             value = 10
-      # ),
       sliderInput("request_shape",
                   "shape:",
                   min = 1,
                   max = 50,
                   value = 10
       ),
-      sliderInput("request_n",
+      sliderInput("request_number",
                   "number of requests:",
                   min = 0,
                   max = 50,

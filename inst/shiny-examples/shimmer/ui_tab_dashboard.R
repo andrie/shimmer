@@ -36,20 +36,36 @@ ui_tab_dashboard <- tabItem(
                   max = 8,
                   value = 4)
     ),
+    # go button !!!
     box(width = 12, actionButton("go_button", "Go!")),
+
+    # first row of output
     fluidRow(
       box(
         width = 4,
-        plotOutput("resource_plot")
+        plotOutput("connection_usage_plot")
       ),
       box(
         width = 4,
-        plotOutput("usage_plot")
+        plotOutput("rejection_usage_plot")
       ),
       box(
         width = 4,
         plotOutput("cpu_histogram")
       )
+    ),
+
+    # second row of output
+    fluidRow(
+      box(
+        width = 4,
+        plotOutput("cpu_usage_plot")
+      ),
+      box(
+        width = 8,
+        plotOutput("process_usage_plot")
+      )
     )
+
   )
 )

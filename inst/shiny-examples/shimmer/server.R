@@ -30,38 +30,47 @@ shinyServer(function(input, output) {
     # var = a*s^2  thus s = sqrt(var / a)
 
     shape <- input$user_shape
-    scale <- input$user_mean / shape
+    mean <- input$user_mean
 
-
-    dat <- data.frame(
-      x = rgamma(1e4, shape = shape, scale = scale)
-    )
-    ggplot(dat, aes(x)) + geom_histogram(bins = 50) + coord_cartesian(xlim = user_defaults$user_mean)
+    dat <- data.frame(x = agamma(1e4, shape = shape, mean = mean))
+    ggplot(dat, aes(x)) +
+      geom_histogram(binwidth = 1) +
+      coord_cartesian(xlim = user_defaults$user_mean)
   })
 
   output$request_plot <- renderPlot({
     shape <- input$request_shape
-    scale <- input$request_mean / shape
+    mean <- input$request_mean
 
-    dat <- data.frame(
-      x = rgamma(1e4, shape = shape, scale = scale)
-    )
-    ggplot(dat, aes(x)) + geom_histogram(bins = 50) + coord_cartesian(xlim = user_defaults$request_mean)
+    dat <- data.frame(x = agamma(1e4, shape = shape, mean = mean))
+    ggplot(dat, aes(x)) +
+      geom_histogram(binwidth = 1) +
+      coord_cartesian(xlim = user_defaults$request_mean)
   })
 
+  params <- reactive({
 
-  # Dashboard tab
-
-  observeEvent(input$go_button, {
-    # reactive({
     min_processes <- input$processes[1]
     max_processes <- input$processes[2]
     max_connections_per_process <- input$max_connections_per_process
     load_factor <- input$load_factor
+
     cpu <- input$cpu
 
-    params <- params_default %>% modifyList(
+    params_default %>% modifyList(
       list(
+        user = list(
+          arrival = list(
+            mean = input$user_mean,
+            shape = input$user_shape
+          ),
+          request = list(
+            mean = input$request_mean,
+            shape = input$request_shape
+          ),
+          number_of_requests = input$request_number
+
+        ),
         system = list(
           cpu = cpu
         ),
@@ -72,19 +81,31 @@ shinyServer(function(input, output) {
           load_factor = load_factor
         ))
     )
+  })
 
-    env <- shimmer(config = params)
 
-    # })
 
-    output$resource_plot <- renderPlot({
-      env %>% plot_shimmer_resources()
+  # Dashboard tab
+
+  observeEvent(input$go_button, {
+
+    env <- shimmer(config = params())
+
+    output$connection_usage_plot <- renderPlot({
+      env %>% plot_shimmer_connection_usage()
     })
-    output$usage_plot <- renderPlot({
-      env %>% plot_shimmer_usage()
+    output$rejection_usage_plot <- renderPlot({
+      env %>% plot_shimmer_rejection_usage()
     })
     output$cpu_histogram <- renderPlot({
-      env %>% plot_shimmer_cpu_histogram()
+      env %>% plot_shimmer_response_histogram()
+    })
+
+    output$cpu_usage_plot <- renderPlot({
+      env %>% plot_shimmer_cpu_usage()
+    })
+    output$process_usage_plot <- renderPlot({
+      env %>% plot_shimmer_process_usage()
     })
 
   })
