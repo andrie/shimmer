@@ -20,65 +20,28 @@
 library(shiny)
 library(shinydashboard)
 
-# Define UI for application that draws a histogram
+sidebar <-   dashboardSidebar(
+  sidebarMenu(
+    menuItem("Users", tabName = "users", icon = icon("th")),
+    menuItem("Dashboard", tabName = "dashboard", icon = icon("dashboard"))
+  )
+)
+
+source("ui_tab_users.R", local = TRUE)
+source("ui_tab_dashboard.R", local = TRUE)
+
+
+body <- dashboardBody(
+  tabItems(
+  ui_tab_dashboard,
+  ui_tab_users
+  )
+)
 
 dashboardPage(
   dashboardHeader(title = "Shimmer: Shiny sizing simulation"),
-  dashboardSidebar(),
-  dashboardBody(
-    tabItem(
-      tabName = "dashboard",
-      fluidRow(
-        box(
-          width = 3,
-          sliderInput("processes",
-                      "min_processes and max_processes:",
-                      min = 0,
-                      max = 20,
-                      value = c(0, 3))
-        ),
-        box(
-          width = 3,
-          sliderInput("max_connections_per_process",
-                      "max_connections_per_process:",
-                      min = 1,
-                      max = 50,
-                      value = 20)
-        ),
-        box(
-          width = 3,
-          sliderInput("load_factor",
-                      "load_factor:",
-                      min = 0,
-                      max = 1,
-                      value = 0.5,
-                      step = 0.1)
-        ),
-        box(
-          width = 3,
-          sliderInput("cpu",
-                      "cpu count:",
-                      min = 1,
-                      max = 8,
-                      value = 4)
-        ),
-        fluidRow(
-          box(
-            width = 4,
-            plotOutput("resource_plot")
-          ),
-          box(
-            width = 4,
-            plotOutput("usage_plot")
-          ),
-          box(
-            width = 4,
-            plotOutput("cpu_histogram")
-          )
-        )
-      )
-    )
-  )
+  sidebar,
+  body
 )
 
 
