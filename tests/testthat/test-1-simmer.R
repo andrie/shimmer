@@ -33,13 +33,13 @@ test_that("plotting shimmer() returns ggplot objects", {
   r <- simmer::get_mon_resources(z)
   expect_is(r, "data.frame")
 
-  p <- plot_shiny_resources(z)
+  p <- plot_shimmer_resources(z)
   expect_is(p, "ggplot")
 
-  p <- plot_shiny_usage(z)
+  p <- plot_shimmer_usage(z)
   expect_is(p, "ggplot")
 
-  p <- plot_shiny_cpu_histogram(z)
+  p <- plot_shimmer_cpu_histogram(z)
   expect_is(p, "ggplot")
 
 

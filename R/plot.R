@@ -1,26 +1,29 @@
 #' Plot shiny resources
 #'
-#' @param .env A `simmer` environment, as defined by [simmer_shiny()]
+#' @param .env A `simmer` environment, as defined by [shimmer()]
 #'
 #' @export
 #' @family plot functions
 #'
-plot_shiny_resources <- function(.env){
+plot_shimmer_resources <- function(.env){
   .env %>%
     get_mon_resources() %>%
   plot(metric = "utilization")
 }
 
+globalVariables(c(".", "resource", "end_time", "start_time", "duration"))
+
 #' Plot shiny usage
 #'
-#' @inheritParams plot_shiny_resources
+#' @inheritParams plot_shimmer_resources
 #'
 #' @export
 #' @family plot functions
 #'
 #' @importFrom ggplot2 theme facet_grid
+#' @importFrom graphics plot
 #'
-plot_shiny_usage <- function(.env){
+plot_shimmer_usage <- function(.env){
   .env %>%
     get_mon_resources() %>%
     .[.$resource != "connection_request", ] %>%
@@ -35,16 +38,17 @@ plot_shiny_usage <- function(.env){
 
 #' Plot histogram of CPU response times
 #'
-#' @inheritParams plot_shiny_resources
+#' @inheritParams plot_shimmer_resources
+#' @param binwidth Passed to [ggplot2::geom_histogram()]
 #'
 #' @export
 #' @family plot functions
 #'
-plot_shiny_cpu_histogram <- function(.env, binwidth = 0.1){
+plot_shimmer_cpu_histogram <- function(.env, binwidth = 0.1){
   .env %>%
     get_mon_arrivals(per_resource = TRUE) %>%
     dplyr::filter(resource == "cpu") %>%
     dplyr::mutate(duration = end_time - start_time) %>%
-    ggplot(aes(x = duration)) +
+    ggplot(aes_string(x = "duration")) +
     geom_histogram(binwidth = binwidth)
 }

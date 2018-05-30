@@ -1,7 +1,7 @@
 #' Defines the location of the example config.yml
 #'
 #' @export
-#' @seealso [simmer_shiny()]
+#' @seealso [shimmer()]
 shimmer_config_file <- function(){
   system.file("config.yml", package = "shimmer")
 }
@@ -18,7 +18,7 @@ shimmer_config_file <- function(){
 #' @return a `simmer` environment
 #' @export
 #'
-#' @seealso [simmer_config_file()]
+#' @seealso [shimmer_config_file()]
 #'
 shimmer <- function(until = 3600, config, config_file) {
 
@@ -59,7 +59,7 @@ shimmer <- function(until = 3600, config, config_file) {
   ACTIVE_PROCESSES <-  0
 
   rectified_rnorm <- function(n, mean = 0, sd = 1){
-    max(0, rnorm(n, mean, sd))
+    max(0, stats::rnorm(n, mean, sd))
   }
 
 

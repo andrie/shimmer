@@ -1,3 +1,5 @@
+#' Discrete Event Simulation for Scaling Shiny, Using the Simmer Package
+#'
 #' @name shimmer-package
 #' @docType package
 #'
@@ -11,6 +13,6 @@
 #'
 #' @importFrom simmer.plot get_mon_resources get_mon_arrivals
 #'
-#' @importFrom ggplot2 ggplot aes geom_histogram facet_grid
+#' @importFrom ggplot2 ggplot aes aes_string geom_histogram facet_grid
 #'
-"_PACKAGE"
+NULL
