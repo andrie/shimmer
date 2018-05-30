@@ -13,7 +13,7 @@ plot_shimmer_resources <- function(.env){
 
 globalVariables(c(".", "resource", "end_time", "start_time", "duration"))
 
-#' Plot shiny usage
+#' Plot shimmer resource usage
 #'
 #' @inheritParams plot_shimmer_resources
 #'
@@ -34,6 +34,86 @@ plot_shimmer_usage <- function(.env){
     theme(legend.position = "bottom")
 }
 
+#' Plot shimmer cpu usage
+#'
+#' @inheritParams plot_shimmer_cpu_usage
+#'
+#' @export
+#' @family plot functions
+#'
+plot_shimmer_cpu_usage <- function(.env){
+  .env %>%
+    get_mon_resources() %>%
+    .[.$resource == "cpu", ] %>%
+    plot(metric = "usage",
+         steps = FALSE,
+         items = c("server", "queue")) +
+    facet_grid(resource ~ ., scales = "free_y") +
+    theme(legend.position = "bottom") +
+    ggplot2::ggtitle("CPU usage")
+}
+
+
+#' Plot shimmer connection usage
+#'
+#' @inheritParams plot_shimmer_cpu_usage
+#'
+#' @export
+#' @family plot functions
+#'
+plot_shimmer_connection_usage <- function(.env){
+  .env %>%
+    get_mon_resources() %>%
+    .[.$resource %in% c("connection"), ] %>%
+    plot(metric = "usage",
+         steps = FALSE,
+         items = c("server")) +
+    facet_grid(resource ~ ., scales = "free_y") +
+    theme(legend.position = "bottom") +
+    ggplot2::ggtitle("Connection usage")
+
+}
+
+#' Plot shimmer rejections
+#'
+#' @inheritParams plot_shimmer_cpu_usage
+#'
+#' @export
+#' @family plot functions
+#'
+plot_shimmer_rejection_usage <- function(.env){
+  .env %>%
+    get_mon_resources() %>%
+    .[.$resource %in% c("rejections"), ] %>%
+    plot(metric = "usage",
+         steps = FALSE,
+         items = c("server")) +
+    facet_grid(resource ~ ., scales = "free_y") +
+    theme(legend.position = "bottom") +
+    ggplot2::ggtitle("Cumulative rejected connections")
+
+}
+
+
+#' Plot shimmer process usage
+#'
+#' @inheritParams plot_shimmer_process_usage
+#'
+#' @export
+#' @family plot functions
+#'
+plot_shimmer_process_usage <- function(.env){
+  .env %>%
+    get_mon_resources() %>%
+    .[grepl("^process", .$resource), ] %>%
+    plot(metric = "usage",
+         steps = FALSE,
+         items = c("server")) +
+    facet_grid(resource ~ ., scales = "free_y") +
+    theme(legend.position = "bottom") +
+    ggplot2::ggtitle("Process usage")
+
+}
 
 
 #' Plot histogram of CPU response times
@@ -44,11 +124,12 @@ plot_shimmer_usage <- function(.env){
 #' @export
 #' @family plot functions
 #'
-plot_shimmer_cpu_histogram <- function(.env, binwidth = 0.1){
+plot_shimmer_response_histogram <- function(.env, binwidth = 0.1){
   .env %>%
     get_mon_arrivals(per_resource = TRUE) %>%
     dplyr::filter(resource == "cpu") %>%
     dplyr::mutate(duration = end_time - start_time) %>%
     ggplot(aes_string(x = "duration")) +
-    geom_histogram(binwidth = binwidth)
+    geom_histogram(binwidth = binwidth) +
+    ggplot2::ggtitle("Response time")
 }

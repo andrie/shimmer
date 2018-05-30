@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot.R
 \name{plot_shimmer_usage}
 \alias{plot_shimmer_usage}
-\title{Plot shiny usage}
+\title{Plot shimmer resource usage}
 \usage{
 plot_shimmer_usage(.env)
 }
@@ -10,9 +10,13 @@ plot_shimmer_usage(.env)
 \item{.env}{A \code{simmer} environment, as defined by \code{\link[=shimmer]{shimmer()}}}
 }
 \description{
-Plot shiny usage
+Plot shimmer resource usage
 }
 \seealso{
-Other plot functions: \code{\link{plot_shimmer_cpu_histogram}},
-  \code{\link{plot_shimmer_resources}}
+Other plot functions: \code{\link{plot_shimmer_connection_usage}},
+  \code{\link{plot_shimmer_cpu_usage}},
+  \code{\link{plot_shimmer_process_usage}},
+  \code{\link{plot_shimmer_rejection_usage}},
+  \code{\link{plot_shimmer_resources}},
+  \code{\link{plot_shimmer_response_histogram}}
 }

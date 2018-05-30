@@ -39,7 +39,13 @@ test_that("plotting shimmer() returns ggplot objects", {
   p <- plot_shimmer_usage(z)
   expect_is(p, "ggplot")
 
-  p <- plot_shimmer_cpu_histogram(z)
+  p <- plot_shimmer_response_histogram(z)
+  expect_is(p, "ggplot")
+
+  p <- plot_shimmer_cpu_usage(z)
+  expect_is(p, "ggplot")
+
+  p <- plot_shimmer_connection_usage(z)
   expect_is(p, "ggplot")
 
 
