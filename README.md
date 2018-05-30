@@ -3,6 +3,8 @@
 
 # shimmer
 
+[![lifecycle](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
+
 The `shimmer` package contains a discrete event simulation that explores
 how `shiny` processes behave at scale, typically orchestrated by RStudio
 Connect or Shiny Server Pro.
@@ -14,15 +16,18 @@ simulation framework.
 
 ## Installation
 
-You can install the released version of pkg from
-[CRAN](https://CRAN.R-project.org) with:
+The package is not yet on CRAN…
+
+<!--
+You can install the released version of pkg from [CRAN](https://CRAN.R-project.org) with:
 
 ``` r
 install.packages("pkg")
 ```
+-->
 
-And the development version from
-[GitHub](https://github.com/andrie/shimmer) with:
+… but you can instll the development version from
+[GitHub](https://github.com/andrie/shimmer) using:
 
 ``` r
 # install.packages("devtools")
@@ -96,19 +101,19 @@ library(shimmer)
 By default, the simulation runs for an hour (3,600 seconds):
 
 ``` r
-env <- simmer_shiny()
+env <- shimmer()
 #> You must specify either config or a valid config_file.
 #> Using the built-in config file.
 env
 #> simmer environment: Shiny | now: 3600 | next: 3600
 #> { Monitor: in memory }
-#> { Resource: connection_request | monitored: TRUE | server status: 57(60) | queue status: 0(0) }
-#> { Resource: rejections | monitored: TRUE | server status: 32(Inf) | queue status: 0(0) }
-#> { Resource: connection | monitored: TRUE | server status: 57(60) | queue status: 0(Inf) }
-#> { Resource: cpu | monitored: TRUE | server status: 0(4) | queue status: 0(Inf) }
-#> { Resource: process_1 | monitored: TRUE | server status: 19(20) | queue status: 0(0) }
-#> { Resource: process_2 | monitored: TRUE | server status: 20(20) | queue status: 0(0) }
-#> { Resource: process_3 | monitored: TRUE | server status: 18(20) | queue status: 0(0) }
+#> { Resource: connection_request | monitored: TRUE | server status: 58(60) | queue status: 0(0) }
+#> { Resource: rejections | monitored: TRUE | server status: 29(Inf) | queue status: 0(0) }
+#> { Resource: connection | monitored: TRUE | server status: 58(60) | queue status: 0(Inf) }
+#> { Resource: cpu | monitored: TRUE | server status: 1(4) | queue status: 0(Inf) }
+#> { Resource: process_1 | monitored: TRUE | server status: 20(20) | queue status: 0(0) }
+#> { Resource: process_2 | monitored: TRUE | server status: 19(20) | queue status: 0(0) }
+#> { Resource: process_3 | monitored: TRUE | server status: 19(20) | queue status: 0(0) }
 #> { Source: controller | monitored: 1 | n_generated: 1 }
 #> { Source: user | monitored: 1 | n_generated: 360 }
 ```
@@ -117,21 +122,21 @@ env
 
 ``` r
 env %>%
-  plot_shiny_usage()
+  plot_shimmer_usage()
 ```
 
 <img src="man/figures/README-unnamed-chunk-6-1.png" width="100%" />
 
 ``` r
 env %>%
-  plot_shiny_resources()
+  plot_shimmer_resources()
 ```
 
 <img src="man/figures/README-unnamed-chunk-7-1.png" width="100%" />
 
 ``` r
 env %>%
-  plot_shiny_cpu_histogram()
+  plot_shimmer_cpu_histogram()
 ```
 
 <img src="man/figures/README-unnamed-chunk-8-1.png" width="100%" />

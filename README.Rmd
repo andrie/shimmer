@@ -14,19 +14,25 @@ knitr::opts_chunk$set(
 ```
 # shimmer
 
+[![lifecycle](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
+
 The `shimmer` package contains a discrete event simulation that explores how `shiny` processes behave at scale, typically orchestrated by RStudio Connect or Shiny Server Pro.
 
 The underlying infrastructure of the simulation is provided by the `simmer` package for discrete event simulations provides. In other words, `shimmer` simulates Shiny app scaling using the `simmer` simulation framework.
 
 ## Installation
 
+The package is not yet on CRAN...
+
+<!--
 You can install the released version of pkg from [CRAN](https://CRAN.R-project.org) with:
 
 ``` r
 install.packages("pkg")
 ```
+-->
 
-And the development version from [GitHub](https://github.com/andrie/shimmer) with:
+... but you can instll the development version from [GitHub](https://github.com/andrie/shimmer) using:
 
 ``` r
 # install.packages("devtools")
