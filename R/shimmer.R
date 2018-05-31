@@ -204,6 +204,12 @@ shimmer <- function(until = 3600, config, config_file) {
 
   ## Run the simulation ---------------------------------------------------
 
+  run_without_warn <- function(.env, until = Inf, progress = NULL, steps = 10){
+    suppressWarnings(
+      simmer::run(.env, until = until, progress = progress, steps = steps)
+    )
+  }
+
   env %>%
     add_resource("connection_request",
                  capacity = total_allowed_connections,
@@ -227,7 +233,7 @@ shimmer <- function(until = 3600, config, config_file) {
                     agamma(1, shape = USER$arrival$shape, mean = USER$arrival$mean)
                   }
     ) %>%
-    run(until)
+    run_without_warn(until)
 }
 
 
