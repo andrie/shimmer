@@ -40,30 +40,34 @@ ui_tab_simulation <- tabItem(
     box(width = 12, actionButton("go_button", "Go!")),
 
     # first row of output
-    fluidRow(
-      box(
-        width = 4,
-        plotOutput("connection_usage_plot")
-      ),
-      box(
-        width = 4,
-        plotOutput("rejection_usage_plot")
-      ),
-      box(
-        width = 4,
-        plotOutput("cpu_histogram")
-      )
-    ),
 
-    # second row of output
-    fluidRow(
-      box(
-        width = 4,
-        plotOutput("cpu_usage_plot")
+    conditionalPanel(
+      "input.go_button >= 1",
+      fluidRow(
+        box(
+          width = 4,
+          plotOutput("cpu_usage_plot") %>% withSpinner()
+        ),
+        box(
+          width = 4,
+          plotOutput("rejection_usage_plot") %>% withSpinner()
+        ),
+        box(
+          width = 4,
+          plotOutput("cpu_histogram") %>% withSpinner()
+        )
       ),
-      box(
-        width = 8,
-        plotOutput("process_usage_plot")
+
+      # second row of output
+      fluidRow(
+        box(
+          width = 4,
+          plotOutput("connection_usage_plot") %>% withSpinner()
+        ),
+        box(
+          width = 8,
+          plotOutput("process_usage_plot") %>% withSpinner()
+        )
       )
     )
 

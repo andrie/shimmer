@@ -45,7 +45,8 @@ ui_tab_users <- tabItem(
   fluidRow(
     box(
       width = 6,
-      plotOutput("user_plot")
+      plotOutput("user_plot") %>%
+        shinycssloaders::withSpinner()
     ),
     box(
       width = 6,

@@ -94,10 +94,9 @@ shinyServer(function(input, output) {
 
     env <- shimmer(config = params())
 
-    output$connection_usage_plot <- renderPlot({
-      validate(need(input[["go_button"]], "Click the go button."))
-      input[["go_button"]]
-      plot_shimmer_connection_usage(env)
+    output$cpu_usage_plot <- renderPlot({
+      req(input[["go_button"]])
+      plot_shimmer_cpu_usage(env)
     })
     output$rejection_usage_plot <- renderPlot({
       validate(need(input[["go_button"]], "Click the go button."))
@@ -110,10 +109,10 @@ shinyServer(function(input, output) {
       plot_shimmer_response_histogram(env)
     })
 
-    output$cpu_usage_plot <- renderPlot({
+    output$connection_usage_plot <- renderPlot({
       validate(need(input[["go_button"]], "Click the go button."))
       input[["go_button"]]
-      plot_shimmer_cpu_usage(env)
+      plot_shimmer_connection_usage(env)
     })
     output$process_usage_plot <- renderPlot({
       validate(need(input[["go_button"]], "Click the go button."))
