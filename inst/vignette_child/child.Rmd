@@ -4,24 +4,24 @@ The `shimmer` package uses discrete event simulation to help answer the question
   * For a given size of server, how many users can Shiny handle?
   * How should I tune the runtime parameters in RStudio Connect for my app?
 
-  The robust answer to this question is to use `shinyloadtest`, but for planning purposes you may want to rapidly develop some hypotheses and intuition about the problem, prior to building and testing an app.
+The robust answer to this question is to use `shinyloadtest`, but for planning purposes you may want to rapidly develop some hypotheses and intuition about the problem, prior to building and testing an app.
 
 
-## The `simmer` package
+## Relationship between `shimmer` and the `simmer` package
 
 The `simmer` package makes it easy to build discrete event simulations in R. The `shimmer` package uses `simmer` under the hood for defining and running the simulation.
 
 ## Setting up the simulation
 
-The `shimmer` function reads a configuration file using the `config::get()` function.  The package contains a default configuration file at:
+The `shimmer()` function reads a configuration file using the `config::get()` function.  The package contains a default configuration file at:
 
-  ```{r}
+```{r}
 system.file("config.yml", package = "shimmer")
 ```
 
 The contents of this file:
 
-  ```{r, echo=FALSE, comment = ""}
+```{r, echo=FALSE, comment = ""}
 f <- readLines(system.file("config.yml", package = "shimmer"))
 cat(f, sep = "\n")
 ```
@@ -34,7 +34,7 @@ library(magrittr)
 library(shimmer)
 ```
 
-By default, the simulation runs for an hour (3,600 seconds):
+By default, the simulation runs for an hour (3,600 seconds) of simulation time:
 
 ```{r}
 env <- shimmer()
@@ -44,18 +44,37 @@ env
 
 ## Plots
 
+You can generate several plots from the simulation:
+
+
+* CPU usage
+* Response histogram
+* Rejected connections (because the system was too busy)
+
+
 ```{r}
 env %>%
-  plot_shimmer_usage()
+  plot_shimmer_cpu_usage()
+```
+```{r}
+env %>%
+  plot_shimmer_response_histogram()
 ```
 
 ```{r}
 env %>%
-  plot_shimmer_connection_usage()
+  plot_shimmer_rejection_usage()
 ```
+
+In addition, you can also get more detail of the underlying system behaviour:
+
+* Connections
+* Connections per process
+
+
 ```{r}
 env %>%
-  plot_shimmer_rejection_usage()
+  plot_shimmer_connection_usage()
 ```
 
 ```{r}
@@ -63,8 +82,4 @@ env %>%
   plot_shimmer_process_usage()
 ```
 
-```{r}
-env %>%
-  plot_shimmer_response_histogram()
-```
 

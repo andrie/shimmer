@@ -6,13 +6,13 @@
 [![lifecycle](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
 
 The `shimmer` package contains a discrete event simulation that explores
-how `shiny` processes behave at scale, typically orchestrated by RStudio
-Connect or Shiny Server Pro.
+how `shiny` processes behave at scale, typically orchestrated by
+*RStudio Connect* or *Shiny Server Pro*.
 
 The underlying infrastructure of the simulation is provided by the
-`simmer` package for discrete event simulations provides. In other
-words, `shimmer` simulates Shiny app scaling using the `simmer`
-simulation framework.
+`simmer` package (for discrete event simulations). In other words,
+`shimmer` simulates Shiny app scaling using the `simmer` simulation
+framework.
 
 ## Installation
 
@@ -48,7 +48,7 @@ The robust answer to this question is to use `shinyloadtest`, but for
 planning purposes you may want to rapidly develop some hypotheses and
 intuition about the problem, prior to building and testing an app.
 
-## The `simmer` package
+## Relationship between `shimmer` and the `simmer` package
 
 The `simmer` package makes it easy to build discrete event simulations
 in R. The `shimmer` package uses `simmer` under the hood for defining
@@ -56,7 +56,7 @@ and running the simulation.
 
 ## Setting up the simulation
 
-The `shimmer` function reads a configuration file using the
+The `shimmer()` function reads a configuration file using the
 `config::get()` function. The package contains a default configuration
 file at:
 
@@ -79,7 +79,7 @@ The contents of this file:
         read_timeout: 3600
       app:
         startup_time: 5.0
-        reponse_time: 2.0
+        response_time: 2.0
       user:
         arrival:
           mean: 10.0
@@ -101,7 +101,8 @@ library(magrittr)
 library(shimmer)
 ```
 
-By default, the simulation runs for an hour (3,600 seconds):
+By default, the simulation runs for an hour (3,600 seconds) of
+simulation time:
 
 ``` r
 env <- shimmer()
@@ -111,28 +112,37 @@ env
 #> simmer environment: Shiny | now: 3600 | next: 3600
 #> { Monitor: in memory }
 #> { Resource: connection_request | monitored: TRUE | server status: 60(60) | queue status: 0(0) }
-#> { Resource: rejections | monitored: TRUE | server status: 212(Inf) | queue status: 0(0) }
+#> { Resource: total_connections | monitored: TRUE | server status: 134(Inf) | queue status: 0(0) }
+#> { Resource: rejections | monitored: TRUE | server status: 241(Inf) | queue status: 0(0) }
 #> { Resource: connection | monitored: TRUE | server status: 60(60) | queue status: 0(Inf) }
-#> { Resource: cpu | monitored: TRUE | server status: 0(4) | queue status: 0(Inf) }
+#> { Resource: cpu | monitored: TRUE | server status: 1(4) | queue status: 0(Inf) }
 #> { Resource: process_1 | monitored: TRUE | server status: 20(20) | queue status: 0(0) }
 #> { Resource: process_2 | monitored: TRUE | server status: 20(20) | queue status: 0(0) }
 #> { Resource: process_3 | monitored: TRUE | server status: 20(20) | queue status: 0(0) }
 #> { Source: controller | monitored: 1 | n_generated: 1 }
-#> { Source: user_accounting | monitored: 1 | n_generated: 352 }
+#> { Source: user_accounting | monitored: 1 | n_generated: 376 }
 ```
 
 ## Plots
 
+You can generate several plots from the simulation:
+
+  - CPU usage
+  - Response histogram
+  - Rejected connections (because the system was too busy)
+
+<!-- end list -->
+
 ``` r
 env %>%
-  plot_shimmer_usage()
+  plot_shimmer_cpu_usage()
 ```
 
 <img src="man/figures/README-unnamed-chunk-6-1.png" width="100%" />
 
 ``` r
 env %>%
-  plot_shimmer_connection_usage()
+  plot_shimmer_response_histogram()
 ```
 
 <img src="man/figures/README-unnamed-chunk-7-1.png" width="100%" />
@@ -144,16 +154,24 @@ env %>%
 
 <img src="man/figures/README-unnamed-chunk-8-1.png" width="100%" />
 
+In addition, you can also get more detail of the underlying system
+behaviour:
+
+  - Connections
+  - Connections per process
+
+<!-- end list -->
+
 ``` r
 env %>%
-  plot_shimmer_process_usage()
+  plot_shimmer_connection_usage()
 ```
 
 <img src="man/figures/README-unnamed-chunk-9-1.png" width="100%" />
 
 ``` r
 env %>%
-  plot_shimmer_response_histogram()
+  plot_shimmer_process_usage()
 ```
 
 <img src="man/figures/README-unnamed-chunk-10-1.png" width="100%" />
