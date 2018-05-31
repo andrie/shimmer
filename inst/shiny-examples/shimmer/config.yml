@@ -13,7 +13,7 @@ default:
     reponse_time: 2.0
   user:
     arrival:
-      mean: 10.0
+      mean: 30.0
       shape: 5.0
     request:
       mean: 10.0
@@ -21,6 +21,6 @@ default:
     idle:
       mean: 1800
       sd: 600
-    number_of_requests: 10.0
+    number_of_requests: 1.0
   system:
     cpu: 4.0

@@ -1,7 +1,7 @@
 # Defines the dashboard tab
 
-ui_tab_dashboard <- tabItem(
-  tabName = "dashboard",
+ui_tab_simulation <- tabItem(
+  tabName = "simulation",
   fluidRow(
     box(
       width = 3,

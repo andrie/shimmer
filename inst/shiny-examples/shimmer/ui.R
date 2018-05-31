@@ -27,19 +27,19 @@ sidebar <-   dashboardSidebar(
   sidebarMenu(
     menuItem("App", tabName = "app", icon = icon("laptop")),
     menuItem("Users", tabName = "users", icon = icon("users")),
-    menuItem("Dashboard", tabName = "dashboard", icon = icon("dashboard"))
+    menuItem("Simulation", tabName = "simulation", icon = icon("dashboard"))
   )
 )
 
 source("ui_tab_app.R", local = TRUE)
 source("ui_tab_users.R", local = TRUE)
-source("ui_tab_dashboard.R", local = TRUE)
+source("ui_tab_simulation.R", local = TRUE)
 
 
 body <- dashboardBody(
   tabItems(
     ui_tab_app,
-    ui_tab_dashboard,
+    ui_tab_simulation,
     ui_tab_users
   )
 )
