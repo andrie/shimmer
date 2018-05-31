@@ -10,7 +10,7 @@ default:
     read_timeout: 3600
   app:
     startup_time: 5.0
-    reponse_time: 2.0
+    response_time: 2.0
   user:
     arrival:
       mean: 10.0

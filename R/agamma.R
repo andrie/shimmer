@@ -8,6 +8,10 @@
 #'
 #' @export
 agamma <- function(n, mean, shape){
+  # a = shape
+  # s = scale
+  # m = a*s  thus  s = m/a
+
   scale <- mean / shape
   stats::rgamma(n, shape = shape, scale = scale)
 }

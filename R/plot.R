@@ -84,9 +84,23 @@ plot_shimmer_connection_usage <- function(.env){
 #' @family plot functions
 #'
 plot_shimmer_rejection_usage <- function(.env){
-  .env %>%
-    get_mon_resources() %>%
-    .[.$resource %in% c("rejections"), ] %>%
+  resources <- .env %>%
+    get_mon_resources()
+
+  rejections <- resources %>%
+    .[.$resource %in% c("rejections"), ]
+
+  if (nrow(rejections == 0)) {
+    connections <- resources %>%
+      .[.$resource %in% c("rejections"), ]
+    connections <- connections[c(1, nrow(connections)), ]
+    connections$resource <- "rejections"
+    connections$server <- 0
+    connections$system <- 0
+    rejections <- connections
+  }
+
+  rejections %>%
     plot(metric = "usage",
          steps = FALSE,
          items = c("server")) +

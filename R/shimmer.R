@@ -79,7 +79,7 @@ shimmer <- function(until = 3600, config, config_file) {
 
   cpu <- trajectory("cpu") %>%
     seize("cpu") %>%
-    timeout(APP$reponse_time) %>%
+    timeout(APP$response_time) %>%
     release("cpu")
 
 
@@ -91,6 +91,12 @@ shimmer <- function(until = 3600, config, config_file) {
   add_process <- function(.env){
     i <- ACTIVE_PROCESSES + 1
 
+    trajectory() %>%
+      seize("cpu") %>%
+      timeout(APP$startup_time) %>%
+      release("cpu") %>%
+      set_capacity("connection",
+                   function()i * RUNTIME$max_connections_per_process)
     updated_env <- env %>%
       add_resource(
         paste0("process_", i),
@@ -98,12 +104,10 @@ shimmer <- function(until = 3600, config, config_file) {
         queue_size = 0
       )
 
-    trajectory() %>%
-      set_capacity("connection",
-                   function()i * RUNTIME$max_connections_per_process)
     ACTIVE_PROCESSES <<- i
     updated_env
   }
+
 
   controller <- trajectory("controller", verbose = TRUE) %>%
     branch(
@@ -131,7 +135,7 @@ shimmer <- function(until = 3600, config, config_file) {
       },
       continue = TRUE
     ) %>%
-    timeout(10) %>%
+    timeout(1) %>%
     rollback(2, Inf)
 
 
@@ -140,7 +144,10 @@ shimmer <- function(until = 3600, config, config_file) {
   # - seize a connection
   # - select and seize a process (based on a defined selection policy)
   # - seize a CPU
-  # - time out for
+  # - time out for the duration of the app response time
+  # - release the CPU
+  # - wait for the request inter-arrival time, then rinse and repeat
+  # - once the user's last request comes in, wait to simulate an idle user
 
   inc_active_connections <- function(){
     ACTIVE_CONNECTIONS <<- ACTIVE_CONNECTIONS + 1
@@ -152,6 +159,7 @@ shimmer <- function(until = 3600, config, config_file) {
     ACTIVE_CONNECTIONS <<- ACTIVE_CONNECTIONS - 1
     return(1)
   }
+
 
 
   user <- trajectory("user") %>%
@@ -177,15 +185,17 @@ shimmer <- function(until = 3600, config, config_file) {
     release("connection")
 
 
+  # The user accounting trajectory is a wrapper around the user trajectory. It
+  # exists to count the total number of connections and rejections.
+
   user_accounting <- trajectory("accounting") %>%
     seize("connection_request",
           amount = inc_active_connections,
           continue = FALSE,
           reject = trajectory() %>%
-            seize("rejections") %>%
-            timeout(until) %>%
-            release("rejections")
+            seize("rejections")
     ) %>%
+    seize("total_connections") %>%
     join(user) %>%
     release("connection_request",
             amount = dec_active_connections
@@ -197,6 +207,9 @@ shimmer <- function(until = 3600, config, config_file) {
   env %>%
     add_resource("connection_request",
                  capacity = total_allowed_connections,
+                 queue_size = 0) %>%
+    add_resource("total_connections",
+                 capacity = Inf,
                  queue_size = 0) %>%
     add_resource("rejections",
                  capacity = Inf,
