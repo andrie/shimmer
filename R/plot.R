@@ -50,7 +50,6 @@ plot_shimmer_cpu_usage <- function(.env){
     plot(metric = "usage",
          steps = FALSE,
          items = c("server", "queue")) +
-    facet_grid(resource ~ ., scales = "free_y") +
     theme(legend.position = "bottom") +
     ggplot2::ggtitle("CPU usage")
 }
@@ -68,9 +67,8 @@ plot_shimmer_connection_usage <- function(.env){
     get_mon_resources() %>%
     .[.$resource %in% c("connection"), ] %>%
     plot(metric = "usage",
-         steps = FALSE,
+         steps = TRUE,
          items = c("server")) +
-    facet_grid(resource ~ ., scales = "free_y") +
     theme(legend.position = "bottom") +
     ggplot2::ggtitle("Connection usage")
 
@@ -90,9 +88,9 @@ plot_shimmer_rejection_usage <- function(.env){
   rejections <- resources %>%
     .[.$resource %in% c("rejections"), ]
 
-  if (nrow(rejections == 0)) {
+  if (nrow(rejections) == 0) {
     connections <- resources %>%
-      .[.$resource %in% c("rejections"), ]
+      .[.$resource %in% c("total_connections"), ]
     connections <- connections[c(1, nrow(connections)), ]
     connections$resource <- "rejections"
     connections$server <- 0
@@ -100,13 +98,26 @@ plot_shimmer_rejection_usage <- function(.env){
     rejections <- connections
   }
 
-  rejections %>%
+  rejections <- rbind(
+    rejections[1, ],
+    rejections
+  )
+
+  rejections[1, "time"] <- 0
+  rejections[1, "server"] <- 0
+  rejections[1, "system"] <- 0
+
+  p <- rejections %>%
     plot(metric = "usage",
-         steps = FALSE,
+         steps = TRUE,
          items = c("server")) +
-    facet_grid(resource ~ ., scales = "free_y") +
     theme(legend.position = "bottom") +
     ggplot2::ggtitle("Cumulative rejected connections")
+
+  if (max(rejections$server) <= 10) {
+    p <- p + scale_y_continuous(breaks = 0:10, limits = c(0, 10))
+  }
+  p
 
 }
 
@@ -119,14 +130,20 @@ plot_shimmer_rejection_usage <- function(.env){
 #' @family plot functions
 #'
 plot_shimmer_process_usage <- function(.env){
-  .env %>%
+  resources <- .env %>%
     get_mon_resources() %>%
-    .[grepl("^process", .$resource), ] %>%
+    .[grepl("^process", .$resource), ]
+
+  resources$resource <- gsub("process_", "", resources$resource)
+
+  resources %>%
     plot(metric = "usage",
          steps = FALSE,
          items = c("server")) +
     facet_grid(resource ~ ., scales = "free_y") +
-    theme(legend.position = "bottom") +
+    theme(legend.position = "bottom",
+          strip.text.y = ggplot2::element_text(angle = 0)
+    ) +
     ggplot2::ggtitle("Process usage")
 
 }
