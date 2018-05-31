@@ -1,0 +1,12 @@
+name: Shimmer_and_Shiny
+title: Shimmer_and_Shiny
+username:
+account: revoandrie
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 351428
+bundleId: 1401534
+url: https://revoandrie.shinyapps.io/Shimmer_and_Shiny/
+when: 1527718261.62088
+asMultiple: FALSE
+asStatic: FALSE

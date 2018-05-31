@@ -4,7 +4,7 @@ ui_tab_users <- tabItem(
   tabName = "users",
   fluidRow(
     box(
-      title = "User arrival time",
+      title = "Arrival of users",
       width = 6,
       sliderInput("user_mean",
                   "mean arrival time:",
@@ -20,7 +20,7 @@ ui_tab_users <- tabItem(
       )
     ),
     box(
-      title = "Request arrival time",
+      title = "Requests made by each user",
       width = 6,
       sliderInput("request_mean",
                   "mean arrival time:",

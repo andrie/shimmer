@@ -25,19 +25,22 @@ library(shinydashboard)
 
 sidebar <-   dashboardSidebar(
   sidebarMenu(
-    menuItem("Users", tabName = "users", icon = icon("th")),
+    menuItem("App", tabName = "app", icon = icon("laptop")),
+    menuItem("Users", tabName = "users", icon = icon("users")),
     menuItem("Dashboard", tabName = "dashboard", icon = icon("dashboard"))
   )
 )
 
+source("ui_tab_app.R", local = TRUE)
 source("ui_tab_users.R", local = TRUE)
 source("ui_tab_dashboard.R", local = TRUE)
 
 
 body <- dashboardBody(
   tabItems(
-  ui_tab_dashboard,
-  ui_tab_users
+    ui_tab_app,
+    ui_tab_dashboard,
+    ui_tab_users
   )
 )
 
