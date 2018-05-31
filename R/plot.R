@@ -33,7 +33,7 @@ plot_shimmer_usage <- function(.env){
          steps = FALSE,
          items = c("server", "queue")) +
     facet_grid(resource ~ ., scales = "free_y") +
-    theme(legend.position = "bottom")
+    theme(legend.position = "none")
 }
 
 #' Plot shimmer cpu usage
@@ -48,9 +48,12 @@ plot_shimmer_cpu_usage <- function(.env){
     get_mon_resources() %>%
     .[.$resource == "cpu", ] %>%
     plot(metric = "usage",
-         steps = FALSE,
-         items = c("server", "queue")) +
-    theme(legend.position = "bottom") +
+         steps = TRUE,
+         items = c("server")) +
+    theme(
+      legend.position = "none",
+      strip.text.x = ggplot2::element_blank()
+    ) +
     ggplot2::ggtitle("CPU usage")
 }
 
@@ -69,8 +72,11 @@ plot_shimmer_connection_usage <- function(.env){
     plot(metric = "usage",
          steps = TRUE,
          items = c("server")) +
-    theme(legend.position = "bottom") +
-    ggplot2::ggtitle("Connection usage")
+    theme(
+      legend.position = "none",
+      strip.text.x = ggplot2::element_blank()
+    ) +
+    ggplot2::ggtitle("Active connections")
 
 }
 
@@ -111,11 +117,14 @@ plot_shimmer_rejection_usage <- function(.env){
     plot(metric = "usage",
          steps = TRUE,
          items = c("server")) +
-    theme(legend.position = "bottom") +
+    theme(
+      legend.position = "none",
+      strip.text.x = ggplot2::element_blank()
+    ) +
     ggplot2::ggtitle("Cumulative rejected connections")
 
   if (max(rejections$server) <= 10) {
-    p <- p + scale_y_continuous(breaks = 0:10, limits = c(0, 10))
+    p <- p + ggplot2::scale_y_continuous(breaks = 0:10, limits = c(0, 10))
   }
   p
 
@@ -135,16 +144,17 @@ plot_shimmer_process_usage <- function(.env){
     .[grepl("^process", .$resource), ]
 
   resources$resource <- gsub("process_", "", resources$resource)
+  resources$resource <- as.factor(resources$resource)
 
   resources %>%
     plot(metric = "usage",
-         steps = FALSE,
+         steps = TRUE,
          items = c("server")) +
     facet_grid(resource ~ ., scales = "free_y") +
-    theme(legend.position = "bottom",
+    theme(legend.position = "none",
           strip.text.y = ggplot2::element_text(angle = 0)
     ) +
-    ggplot2::ggtitle("Process usage")
+    ggplot2::ggtitle("Connections per process")
 
 }
 
