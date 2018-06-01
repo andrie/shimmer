@@ -69,6 +69,7 @@ The contents of this file:
 
     default:
       runtime:
+        comment: The app runtime settings that are available in RStudio Connect
         max_processes: 3
         min_processes: 0
         max_connections_per_process: 20
@@ -78,19 +79,23 @@ The contents of this file:
         connection_timeout: 3600
         read_timeout: 3600
       app:
+        comment: Describes the app startup time and response time per click
         startup_time: 5.0
         response_time: 2.0
       user:
         arrival:
-          mean: 10.0
+          comment: Arrival time between users (seconds)
+          mean: 30.0
           shape: 5.0
+        number_of_requests_per_user: 5.0
         request:
+          comment: Mean arrival time between requests for a given user (seconds)
           mean: 10.0
           shape: 5.0
         idle:
+          comment: Time in seconds that connection remains live after last request
           mean: 1800
           sd: 600
-        number_of_requests: 10.0
       system:
         cpu: 4.0
 
@@ -111,16 +116,16 @@ env <- shimmer()
 env
 #> simmer environment: Shiny | now: 3600 | next: 3600
 #> { Monitor: in memory }
-#> { Resource: connection_request | monitored: TRUE | server status: 60(60) | queue status: 0(0) }
-#> { Resource: total_connections | monitored: TRUE | server status: 134(Inf) | queue status: 0(0) }
-#> { Resource: rejections | monitored: TRUE | server status: 241(Inf) | queue status: 0(0) }
-#> { Resource: connection | monitored: TRUE | server status: 60(60) | queue status: 0(Inf) }
-#> { Resource: cpu | monitored: TRUE | server status: 1(4) | queue status: 0(Inf) }
-#> { Resource: process_1 | monitored: TRUE | server status: 20(20) | queue status: 0(0) }
-#> { Resource: process_2 | monitored: TRUE | server status: 20(20) | queue status: 0(0) }
-#> { Resource: process_3 | monitored: TRUE | server status: 20(20) | queue status: 0(0) }
+#> { Resource: connection_request | monitored: TRUE | server status: 53(60) | queue status: 0(0) }
+#> { Resource: total_connections | monitored: TRUE | server status: 112(Inf) | queue status: 0(0) }
+#> { Resource: rejections | monitored: TRUE | server status: 3(Inf) | queue status: 0(0) }
+#> { Resource: connection | monitored: TRUE | server status: 53(60) | queue status: 0(Inf) }
+#> { Resource: cpu | monitored: TRUE | server status: 0(4) | queue status: 0(Inf) }
+#> { Resource: process_1 | monitored: TRUE | server status: 18(20) | queue status: 0(0) }
+#> { Resource: process_2 | monitored: TRUE | server status: 18(20) | queue status: 0(0) }
+#> { Resource: process_3 | monitored: TRUE | server status: 17(20) | queue status: 0(0) }
 #> { Source: controller | monitored: 1 | n_generated: 1 }
-#> { Source: user_accounting | monitored: 1 | n_generated: 376 }
+#> { Source: user_accounting | monitored: 1 | n_generated: 116 }
 ```
 
 ## Plots
@@ -138,21 +143,21 @@ env %>%
   plot_shimmer_cpu_usage()
 ```
 
-<img src="man/figures/README-unnamed-chunk-6-1.png" width="100%" />
+![](man/figures/README-unnamed-chunk-6-1.png)<!-- -->
 
 ``` r
 env %>%
   plot_shimmer_response_histogram()
 ```
 
-<img src="man/figures/README-unnamed-chunk-7-1.png" width="100%" />
+![](man/figures/README-unnamed-chunk-7-1.png)<!-- -->
 
 ``` r
 env %>%
   plot_shimmer_rejection_usage()
 ```
 
-<img src="man/figures/README-unnamed-chunk-8-1.png" width="100%" />
+![](man/figures/README-unnamed-chunk-8-1.png)<!-- -->
 
 In addition, you can also get more detail of the underlying system
 behaviour:
@@ -167,11 +172,11 @@ env %>%
   plot_shimmer_connection_usage()
 ```
 
-<img src="man/figures/README-unnamed-chunk-9-1.png" width="100%" />
+![](man/figures/README-unnamed-chunk-9-1.png)<!-- -->
 
 ``` r
 env %>%
   plot_shimmer_process_usage()
 ```
 
-<img src="man/figures/README-unnamed-chunk-10-1.png" width="100%" />
+![](man/figures/README-unnamed-chunk-10-1.png)<!-- -->
