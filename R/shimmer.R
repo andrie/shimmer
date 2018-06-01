@@ -175,7 +175,7 @@ shimmer <- function(until = 3600, config, config_file) {
     timeout(function() agamma(1, mean = USER$request$mean, shape = USER$request$shape)) %>%
     rollback(
       get_n_activities(cpu) + 1,
-      times = USER$number_of_requests - 1
+      times = USER$number_of_requests_per_user - 1
     ) %>%
 
     # time out for idle connection
