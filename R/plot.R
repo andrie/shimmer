@@ -11,7 +11,7 @@ globalVariables(c(".", "resource", "end_time", "start_time", "duration"))
 plot_shimmer_resources <- function(.env){
   .env %>%
     get_mon_resources() %>%
-  plot(metric = "utilization")
+    plot(metric = "utilization")
 }
 
 
