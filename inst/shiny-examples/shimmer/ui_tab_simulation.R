@@ -44,6 +44,13 @@ ui_tab_simulation <- tabItem(
     conditionalPanel(
       "input.go_button >= 1",
       fluidRow(
+        valueBoxOutput("rejection_box")
+      )
+    ),
+
+    conditionalPanel(
+      "input.go_button >= 1",
+      fluidRow(
         box(
           width = 4,
           plotOutput("cpu_usage_plot") %>% withSpinner()

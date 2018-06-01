@@ -36,7 +36,7 @@ ui_tab_users <- tabItem(
       ),
       sliderInput("request_number",
                   "number of requests:",
-                  min = 0,
+                  min = 1,
                   max = 50,
                   value = 10
       )

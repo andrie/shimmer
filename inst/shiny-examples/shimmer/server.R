@@ -62,22 +62,24 @@ shinyServer(function(input, output) {
             mean = input[["user_mean"]],
             shape = input[["user_shape"]]
           ),
+          number_of_requests_per_user = input[["request_number"]],
           request = list(
             mean = input[["request_mean"]],
             shape = input[["request_shape"]]
-          ),
-          number_of_requests = input[["request_number"]]
-
+          )
         ),
+
         system = list(
           cpu = cpu
         ),
+
         runtime = list(
           min_processes  = min_processes,
           max_processes = max_processes,
           max_connections_per_process = max_connections_per_process,
           load_factor = load_factor
         ),
+
         app = list(
           startup_time = input[["app_startup_time"]],
           response_time = input[["app_response_time"]]
@@ -90,33 +92,52 @@ shinyServer(function(input, output) {
 
   # Dashboard tab ----
 
+  adaptiveValueBox <- function(value, subtitle, as_percent = FALSE, icon = NULL,
+                               colors = c("blue", "orange", "red"),
+                               thresholds, width = 4, href = NULL)
+  {
+    to_percent <- function(x) sprintf("%1.1f%%", x * 100)
+    color <- dplyr::case_when(
+      value <= thresholds[1] ~ colors[1],
+      value >= thresholds[1] && value <= thresholds[2] ~ colors[2],
+      value >= thresholds[2] ~ colors[3]
+    )
+    if (as_percent) value <- to_percent(value)
+    shinydashboard::valueBox(value = value, subtitle = subtitle, icon = icon,
+                             color = color, width = width, href = href)
+
+  }
+
   observeEvent(input[["go_button"]], {
 
     env <- shimmer(config = params())
 
+    rejections <- last_resource_value(env, "rejections")
+    connections <- last_resource_value(env, "total_connections")
+    reject_ratio <- rejections / (rejections + connections)
+
+
+
+    output$rejection_box <- renderValueBox({
+      adaptiveValueBox(reject_ratio, "Rejection rate", as_percent = TRUE, icon = icon("ban"),
+                       thresholds = c(0, 0.01)
+      )
+    })
+
     output$cpu_usage_plot <- renderPlot({
-      req(input[["go_button"]])
       plot_shimmer_cpu_usage(env)
     })
     output$rejection_usage_plot <- renderPlot({
-      validate(need(input[["go_button"]], "Click the go button."))
-      input[["go_button"]]
       plot_shimmer_rejection_usage(env)
     })
     output$cpu_histogram <- renderPlot({
-      validate(need(input[["go_button"]], "Click the go button."))
-      input[["go_button"]]
       plot_shimmer_response_histogram(env)
     })
 
     output$connection_usage_plot <- renderPlot({
-      validate(need(input[["go_button"]], "Click the go button."))
-      input[["go_button"]]
       plot_shimmer_connection_usage(env)
     })
     output$process_usage_plot <- renderPlot({
-      validate(need(input[["go_button"]], "Click the go button."))
-      input[["go_button"]]
       plot_shimmer_process_usage(env)
     })
 

@@ -19,6 +19,9 @@
 
 library(shiny)
 library(shinydashboard)
+library(magrittr)
+library(shinycssloaders)
+
 
 
 
