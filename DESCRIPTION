@@ -26,5 +26,6 @@ Imports:
     config,
     shiny,
     yaml,
-    shinydashboard
+    shinydashboard,
+    scales
 VignetteBuilder: knitr
