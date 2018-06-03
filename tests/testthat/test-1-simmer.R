@@ -30,8 +30,22 @@ test_that("shimmer() returns an env", {
 test_that("plotting shimmer() returns ggplot objects", {
   z <- shimmer(100)
 
+  expect_true(assert_is_simmer(z))
+
   r <- simmer::get_mon_resources(z)
   expect_is(r, "data.frame")
+
+  p <- plot_shimmer_connection_usage(z)
+  expect_is(p, "ggplot")
+
+  p <- plot_shimmer_cpu_usage(z)
+  expect_is(p, "ggplot")
+
+  p <- plot_shimmer_process_usage(z)
+  expect_is(p, "ggplot")
+
+  p <- plot_shimmer_rejection_usage(z)
+  expect_is(p, "ggplot")
 
   p <- plot_shimmer_resources(z)
   expect_is(p, "ggplot")
@@ -39,16 +53,8 @@ test_that("plotting shimmer() returns ggplot objects", {
   p <- plot_shimmer_usage(z)
   expect_is(p, "ggplot")
 
-  p <- plot_shimmer_response_histogram(z)
-  expect_is(p, "ggplot")
-
-  p <- plot_shimmer_cpu_usage(z)
-  expect_is(p, "ggplot")
-
-  p <- plot_shimmer_connection_usage(z)
-  expect_is(p, "ggplot")
-
-
 })
+
+
 
 

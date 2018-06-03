@@ -1,4 +1,10 @@
-globalVariables(c(".", "resource", "end_time", "start_time", "duration"))
+globalVariables(
+  c(
+    ".", "resource", "end_time", "start_time", "duration",
+    "replication", "time","util", "cum_util",
+    "capacity", "server"
+  )
+)
 
 
 #' Plot shiny resources
@@ -9,6 +15,7 @@ globalVariables(c(".", "resource", "end_time", "start_time", "duration"))
 #' @family plot functions
 #'
 plot_shimmer_resources <- function(.env){
+  assert_is_simmer(.env)
   .env %>%
     get_mon_resources() %>%
     plot(metric = "utilization")
@@ -26,6 +33,7 @@ plot_shimmer_resources <- function(.env){
 #' @importFrom graphics plot
 #'
 plot_shimmer_usage <- function(.env){
+  assert_is_simmer(.env)
   .env %>%
     get_mon_resources() %>%
     .[.$resource != "connection_request", ] %>%
@@ -43,18 +51,18 @@ plot_shimmer_usage <- function(.env){
 #' @export
 #' @family plot functions
 #'
+#' @importFrom ggplot2 geom_line stat_smooth scale_y_continuous ylab ggtitle
+#'
 plot_shimmer_cpu_usage <- function(.env){
+  assert_is_simmer(.env)
   .env %>%
-    get_mon_resources() %>%
-    .[.$resource == "cpu", ] %>%
-    plot(metric = "usage",
-         steps = TRUE,
-         items = c("server")) +
-    theme(
-      legend.position = "none",
-      strip.text.x = ggplot2::element_blank()
-    ) +
-    ggplot2::ggtitle("CPU usage")
+    fast_server_usage_summary("cpu") %>%
+    ggplot(aes(x = time, y = util)) +
+    geom_line(col = "grey50") +
+    stat_smooth(method = "gam", formula = y ~ s(x, bs = "cs", k = 50)) +
+    scale_y_continuous(labels = scales::percent_format(), limits = c(0, 1)) +
+    ylab("Utilisation") +
+    ggtitle("CPU usage")
 }
 
 
@@ -66,6 +74,7 @@ plot_shimmer_cpu_usage <- function(.env){
 #' @family plot functions
 #'
 plot_shimmer_connection_usage <- function(.env){
+  assert_is_simmer(.env)
   .env %>%
     get_mon_resources() %>%
     .[.$resource %in% c("connection"), ] %>%
@@ -88,6 +97,7 @@ plot_shimmer_connection_usage <- function(.env){
 #' @family plot functions
 #'
 plot_shimmer_rejection_usage <- function(.env){
+  assert_is_simmer(.env)
   resources <- .env %>%
     get_mon_resources()
 
@@ -139,12 +149,15 @@ plot_shimmer_rejection_usage <- function(.env){
 #' @family plot functions
 #'
 plot_shimmer_process_usage <- function(.env){
+  assert_is_simmer(.env)
   resources <- .env %>%
     get_mon_resources() %>%
     .[grepl("^process", .$resource), ]
 
   resources$resource <- gsub("process_", "", resources$resource)
-  resources$resource <- as.factor(resources$resource)
+  levels <- sort(unique(as.numeric(resources$resource)))
+
+  resources$resource <- factor(resources$resource, levels = levels)
 
   resources %>%
     plot(metric = "usage",
@@ -168,6 +181,7 @@ plot_shimmer_process_usage <- function(.env){
 #' @family plot functions
 #'
 plot_shimmer_response_histogram <- function(.env, binwidth = 0.1){
+  assert_is_simmer(.env)
   .env %>%
     get_mon_arrivals(per_resource = TRUE) %>%
     dplyr::filter(resource == "cpu") %>%
