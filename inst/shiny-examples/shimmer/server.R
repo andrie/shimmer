@@ -126,7 +126,7 @@ shinyServer(function(input, output) {
     cpu_ratio <- env %>% fast_server_usage_summary("cpu", summarize = TRUE) %>% .$mean
     output$cpu_box <- renderValueBox({
       adaptiveValueBox(cpu_ratio, "CPU usage", as_percent = TRUE, icon = icon("microchip"),
-                       thresholds = c(0.8, 0.9),
+                       thresholds = c(0.7, 0.85),
                        reverse = FALSE
       )
     })
@@ -148,6 +148,7 @@ shinyServer(function(input, output) {
     })
 
     # Second row of plots
+
 
     output$cpu_usage_plot <- renderPlot({
       plot_shimmer_cpu_usage(env)

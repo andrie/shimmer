@@ -15,8 +15,9 @@ ui_tab_simulation <- tabItem(
       width = 3,
       sliderInput("max_connections_per_process",
                   "max connections per process:",
-                  min = 1,
+                  min = 5,
                   max = 50,
+                  step = 5,
                   value = 20)
     ),
     box(
@@ -32,14 +33,15 @@ ui_tab_simulation <- tabItem(
       width = 3,
       sliderInput("cpu",
                   "cpu count:",
-                  min = 1,
-                  max = 16,
-                  value = 4)
+                  min = 4,
+                  max = 32,
+                  step = 4,
+                  value = 8)
     ),
     # go button !!!
     box(width = 12, actionButton("go_button", "Go!")),
 
-    # first row of output
+    # first row of output with value boxes
 
     conditionalPanel(
       "input.go_button >= 1",
@@ -50,25 +52,30 @@ ui_tab_simulation <- tabItem(
       )
     ),
 
+    # second row of output with key plots
+
     conditionalPanel(
       "input.go_button >= 1",
       fluidRow(
+        class = "row300",
         box(
           width = 4,
-          plotOutput("cpu_usage_plot") %>% withSpinner()
+          plotOutput("cpu_usage_plot", height = "200px") %>% withSpinner()
         ),
         box(
           width = 4,
-          plotOutput("rejection_usage_plot") %>% withSpinner()
+          plotOutput("rejection_usage_plot", height = "200px") %>% withSpinner()
         ),
         box(
           width = 4,
-          plotOutput("cpu_histogram") %>% withSpinner()
+          plotOutput("cpu_histogram", height = "200px") %>% withSpinner()
         )
       ),
 
-      # second row of output
+      # third  row of output with detail plots
+
       fluidRow(
+        class = "row300",
         box(
           width = 4,
           plotOutput("connection_usage_plot") %>% withSpinner()

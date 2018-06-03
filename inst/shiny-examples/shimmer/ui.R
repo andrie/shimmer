@@ -47,6 +47,7 @@ body <- dashboardBody(
   )
 )
 
+
 dashboardPage(
   dashboardHeader(title = "Shimmer: Shiny sizing simulation"),
   sidebar,

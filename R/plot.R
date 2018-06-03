@@ -51,14 +51,14 @@ plot_shimmer_usage <- function(.env){
 #' @export
 #' @family plot functions
 #'
-#' @importFrom ggplot2 geom_line stat_smooth scale_y_continuous ylab ggtitle
+#' @importFrom ggplot2 geom_line stat_smooth scale_y_continuous ylab ggtitle geom_point
 #'
 plot_shimmer_cpu_usage <- function(.env){
   assert_is_simmer(.env)
   .env %>%
     fast_server_usage_summary("cpu") %>%
     ggplot(aes(x = time, y = util)) +
-    geom_line(col = "grey50") +
+    geom_point(col = "grey50", size = 0.5, alpha = 0.1) +
     stat_smooth(method = "gam", formula = y ~ s(x, bs = "cs", k = 50)) +
     scale_y_continuous(labels = scales::percent_format(), limits = c(0, 1)) +
     ylab("Utilisation") +
@@ -131,7 +131,7 @@ plot_shimmer_rejection_usage <- function(.env){
       legend.position = "none",
       strip.text.x = ggplot2::element_blank()
     ) +
-    ggplot2::ggtitle("Cumulative rejected connections")
+    ggplot2::ggtitle("Rejected connections", subtitle = "Cumulative")
 
   if (max(rejections$server) <= 10) {
     p <- p + ggplot2::scale_y_continuous(breaks = 0:10, limits = c(0, 10))
