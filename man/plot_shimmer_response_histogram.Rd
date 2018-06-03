@@ -20,6 +20,5 @@ Other plot functions: \code{\link{plot_shimmer_connection_usage}},
   \code{\link{plot_shimmer_process_usage}},
   \code{\link{plot_shimmer_rejection_usage}},
   \code{\link{plot_shimmer_resources}},
-  \code{\link{plot_shimmer_usage}},
-  \code{\link{summary_cpu}}
+  \code{\link{plot_shimmer_usage}}
 }

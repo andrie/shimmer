@@ -11,9 +11,12 @@ fast_server_usage_summary(.env, name, summarize = FALSE)
 
 \item{name}{Resource name, e.g. "cpu"}
 
-\item{If}{TRUE, returns the overall mean utilization, i.e. the last row of
+\item{summarize}{If TRUE, returns the overall mean utilization, i.e. the last row of
 compuation}
 }
 \description{
 Rapidly computes a resource usage summary.
+}
+\seealso{
+Other resource summary functions: \code{\link{last_resource_value}}
 }
