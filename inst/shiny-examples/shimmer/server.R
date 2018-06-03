@@ -7,12 +7,15 @@
 #    http://shiny.rstudio.com/
 #
 
-library(shiny)
-library(shinydashboard)
-library(ggplot2)
-library(shimmer)
-library(shinycssloaders)
-library(magrittr)
+suppressPackageStartupMessages({
+  library(shiny)
+  library(shinydashboard)
+  library(ggplot2)
+  library(shimmer)
+  library(shinycssloaders)
+  library(magrittr)
+  box <- shinydashboard::box
+})
 
 
 
@@ -32,7 +35,9 @@ shinyServer(function(input, output) {
     dat <- data.frame(x = agamma(1e4, shape = shape, mean = mean))
     ggplot(dat, aes(x)) +
       geom_histogram(binwidth = 1) +
-      coord_cartesian(xlim = user_defaults[["user_mean"]])
+      coord_cartesian(xlim = user_defaults[["user_mean"]]) +
+      ggtitle("Arrival of new users", subtitle = "Distribution") +
+      xlab("Time")
   })
 
   output[["request_plot"]] <- renderPlot({
@@ -42,7 +47,9 @@ shinyServer(function(input, output) {
     dat <- data.frame(x = agamma(1e4, shape = shape, mean = mean))
     ggplot(dat, aes(x)) +
       geom_histogram(binwidth = 1) +
-      coord_cartesian(xlim = user_defaults[["request_mean"]])
+      coord_cartesian(xlim = user_defaults[["request_mean"]]) +
+      ggtitle("Arrival of new requests", subtitle = "Distribution") +
+      xlab("Time")
   })
 
   params <- reactive({
@@ -94,9 +101,10 @@ shinyServer(function(input, output) {
 
   adaptiveValueBox <- function(value, subtitle, as_percent = FALSE, icon = NULL,
                                colors = c("blue", "orange", "red"),
-                               thresholds, width = 4, href = NULL)
+                               thresholds, reverse = FALSE, width = 4, href = NULL)
   {
     to_percent <- function(x) sprintf("%1.1f%%", x * 100)
+    if (reverse) colors <- rev(colors)
     color <- dplyr::case_when(
       value <= thresholds[1] ~ colors[1],
       value >= thresholds[1] && value <= thresholds[2] ~ colors[2],
@@ -112,17 +120,34 @@ shinyServer(function(input, output) {
 
     env <- shimmer(config = params())
 
+
+    # First row of value boxes
+
+    cpu_ratio <- env %>% fast_server_usage_summary("cpu", summarize = TRUE) %>% .$mean
+    output$cpu_box <- renderValueBox({
+      adaptiveValueBox(cpu_ratio, "CPU usage", as_percent = TRUE, icon = icon("microchip"),
+                       thresholds = c(0.8, 0.9),
+                       reverse = FALSE
+      )
+    })
+
     rejections <- last_resource_value(env, "rejections")
     connections <- last_resource_value(env, "total_connections")
     reject_ratio <- rejections / (rejections + connections)
-
-
 
     output$rejection_box <- renderValueBox({
       adaptiveValueBox(reject_ratio, "Rejection rate", as_percent = TRUE, icon = icon("ban"),
                        thresholds = c(0, 0.01)
       )
     })
+
+    output$duration_box <- renderValueBox({
+      adaptiveValueBox(0, "Duration", as_percent = TRUE, icon = icon("hourglass-end"),
+                       thresholds = c(0, 0.01)
+      )
+    })
+
+    # Second row of plots
 
     output$cpu_usage_plot <- renderPlot({
       plot_shimmer_cpu_usage(env)
@@ -133,6 +158,8 @@ shinyServer(function(input, output) {
     output$cpu_histogram <- renderPlot({
       plot_shimmer_response_histogram(env)
     })
+
+    # Third row of plots
 
     output$connection_usage_plot <- renderPlot({
       plot_shimmer_connection_usage(env)

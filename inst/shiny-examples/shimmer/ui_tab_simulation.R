@@ -33,7 +33,7 @@ ui_tab_simulation <- tabItem(
       sliderInput("cpu",
                   "cpu count:",
                   min = 1,
-                  max = 8,
+                  max = 16,
                   value = 4)
     ),
     # go button !!!
@@ -44,7 +44,9 @@ ui_tab_simulation <- tabItem(
     conditionalPanel(
       "input.go_button >= 1",
       fluidRow(
-        valueBoxOutput("rejection_box")
+        valueBoxOutput("cpu_box"),
+        valueBoxOutput("rejection_box"),
+        valueBoxOutput("duration_box")
       )
     ),
 
