@@ -62,6 +62,14 @@ summary_cpu <- function(.env) last_resource_value(.env, "cpu")
 #   plot_obj
 # }
 
+#' Rapidly computes a resource usage summary.
+#'
+#' @inheritParams plot_shimmer_resources
+#' @param name Resource name, e.g. "cpu"
+#' @param If TRUE, returns the overall mean utilization, i.e. the last row of
+#'   compuation
+#'
+#' @export
 fast_server_usage_summary <- function(.env, name, summarize = FALSE) {
 
   p <- .env %>%
