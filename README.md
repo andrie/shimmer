@@ -11,8 +11,8 @@ how `shiny` processes behave at scale, typically orchestrated by
 
 The underlying infrastructure of the simulation is provided by the
 `simmer` package (for discrete event simulations). In other words,
-`shimmer` simulates Shiny app scaling using the `simmer` simulation
-framework.
+`shimmer` simulates how Shiny apps scale by using the `simmer`
+simulation framework.
 
 ## Installation
 
@@ -87,7 +87,7 @@ The contents of this file:
           comment: Arrival time between users (seconds)
           mean: 30.0
           shape: 5.0
-        number_of_requests_per_user: 5.0
+        number_of_requests_per_user: 1.0
         request:
           comment: Mean arrival time between requests for a given user (seconds)
           mean: 10.0
@@ -116,16 +116,16 @@ env <- shimmer()
 env
 #> simmer environment: Shiny | now: 3600 | next: 3600
 #> { Monitor: in memory }
-#> { Resource: connection_request | monitored: TRUE | server status: 53(60) | queue status: 0(0) }
-#> { Resource: total_connections | monitored: TRUE | server status: 112(Inf) | queue status: 0(0) }
-#> { Resource: rejections | monitored: TRUE | server status: 3(Inf) | queue status: 0(0) }
-#> { Resource: connection | monitored: TRUE | server status: 53(60) | queue status: 0(Inf) }
+#> { Resource: connection_request | monitored: TRUE | server status: 52(60) | queue status: 0(0) }
+#> { Resource: total_connections | monitored: TRUE | server status: 111(Inf) | queue status: 0(0) }
+#> { Resource: rejections | monitored: TRUE | server status: 9(Inf) | queue status: 0(0) }
+#> { Resource: connection | monitored: TRUE | server status: 52(60) | queue status: 0(Inf) }
 #> { Resource: cpu | monitored: TRUE | server status: 0(4) | queue status: 0(Inf) }
 #> { Resource: process_1 | monitored: TRUE | server status: 18(20) | queue status: 0(0) }
-#> { Resource: process_2 | monitored: TRUE | server status: 18(20) | queue status: 0(0) }
-#> { Resource: process_3 | monitored: TRUE | server status: 17(20) | queue status: 0(0) }
+#> { Resource: process_2 | monitored: TRUE | server status: 19(20) | queue status: 0(0) }
+#> { Resource: process_3 | monitored: TRUE | server status: 15(20) | queue status: 0(0) }
 #> { Source: controller | monitored: 1 | n_generated: 1 }
-#> { Source: user_accounting | monitored: 1 | n_generated: 116 }
+#> { Source: user_accounting | monitored: 1 | n_generated: 121 }
 ```
 
 ## Plots
