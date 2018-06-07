@@ -12,7 +12,8 @@ ui_tab_users <- tabItem(
                     "mean arrival time:",
                     min = min,
                     max = max,
-                    value = value
+                    value = value,
+                    step = step
         )
       ),
       with(
@@ -21,7 +22,8 @@ ui_tab_users <- tabItem(
                     "shape:",
                     min = min,
                     max = max,
-                    value = value
+                    value = value,
+                    step = step
         )
       )
     ),
@@ -34,7 +36,8 @@ ui_tab_users <- tabItem(
                     "mean arrival time:",
                     min = min,
                     max = max,
-                    value = value
+                    value = value,
+                    step = step
         )
       ),
       with(
@@ -43,7 +46,8 @@ ui_tab_users <- tabItem(
                     "shape:",
                     min = min,
                     max = max,
-                    value = value
+                    value = value,
+                    step = step
         )
       ),
       with(
@@ -52,7 +56,8 @@ ui_tab_users <- tabItem(
                     "number of requests:",
                     min = min,
                     max = max,
-                    value = value
+                    value = value,
+                    step = step
         )
       )
     )
@@ -60,9 +65,7 @@ ui_tab_users <- tabItem(
   fluidRow(
     box(
       width = 6,
-      shinycssloaders::withSpinner(
-        plotOutput("user_plot")
-      )
+      plotOutput("user_plot")
     ),
     box(
       width = 6,

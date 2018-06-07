@@ -25,7 +25,6 @@ suppressPackageStartupMessages({
   library(config)
 })
 
-defaults <- config::get(file = "defaults.yml")
 
 
 sidebar <-   dashboardSidebar(

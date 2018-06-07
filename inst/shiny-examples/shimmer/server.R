@@ -32,10 +32,14 @@ shinyServer(function(input, output) {
     shape <- input[["user_shape"]]
     mean <- input[["user_mean"]]
 
+    plot_limits <- c(
+      defaults$ui$users$user_mean$min,
+      defaults$ui$users$user_mean$max
+    )
     dat <- data.frame(x = agamma(1e4, shape = shape, mean = mean))
     ggplot(dat, aes(x)) +
       geom_histogram(binwidth = 1) +
-      coord_cartesian(xlim = user_defaults[["user_mean"]]) +
+      coord_cartesian(xlim = plot_limits) +
       ggtitle("Arrival of new users", subtitle = "Distribution") +
       xlab("Time")
   })
@@ -44,10 +48,14 @@ shinyServer(function(input, output) {
     shape <- input[["request_shape"]]
     mean <- input[["request_mean"]]
 
+    plot_limits <- c(
+      defaults$ui$users$request_mean$min,
+      defaults$ui$users$request_mean$max
+    )
     dat <- data.frame(x = agamma(1e4, shape = shape, mean = mean))
     ggplot(dat, aes(x)) +
       geom_histogram(binwidth = 1) +
-      coord_cartesian(xlim = user_defaults[["request_mean"]]) +
+      coord_cartesian(xlim = plot_limits) +
       ggtitle("Arrival of new requests", subtitle = "Distribution") +
       xlab("Time")
   })
