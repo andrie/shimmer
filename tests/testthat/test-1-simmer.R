@@ -10,16 +10,20 @@ test_that("shimmer() returns an env", {
   y <- yaml::read_yaml(conf_file)
   expect_is(y, "list")
 
+  set.seed(1)
   z <- shimmer(0)
   expect_is(z, "simmer")
 
+  set.seed(1)
   z <- shimmer(100)
   expect_is(z, "simmer")
 
+  set.seed(1)
   z <- shimmer(100, config_file = conf_file)
   expect_is(z, "simmer")
 
 
+  set.seed(1)
   z <- shimmer(100, config = yaml::read_yaml(conf_file)$default )
   expect_is(z, "simmer")
 
@@ -28,6 +32,8 @@ test_that("shimmer() returns an env", {
 
 
 test_that("plotting shimmer() returns ggplot objects", {
+
+  set.seed(1)
   z <- shimmer(100)
 
   expect_true(assert_is_simmer(z))
