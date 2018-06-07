@@ -6,17 +6,23 @@ ui_tab_app <- tabItem(
     box(
       title = "App startup and response time",
       width = 6,
-      sliderInput("app_startup_time",
-                  "App startup time:",
-                  min = 0,
-                  max = 60,
-                  value = 5
+      with(
+        defaults$ui$app$app_startup_time,
+        sliderInput("app_startup_time",
+                    "App startup time:",
+                    min = min,
+                    max = max,
+                    value = value
+        )
       ),
-      sliderInput("app_response_time",
-                  "App response time:",
-                  min = 0,
-                  max = 60,
-                  value = 2
+      with(
+        defaults$ui$app$app_response_time,
+        sliderInput("app_response_time",
+                    "App response time:",
+                    min = min,
+                    max = max,
+                    value = value
+        )
       )
     )
   )

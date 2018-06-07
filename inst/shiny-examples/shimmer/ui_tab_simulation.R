@@ -5,38 +5,55 @@ ui_tab_simulation <- tabItem(
   fluidRow(
     box(
       width = 3,
-      sliderInput("processes",
-                  "min and max processes:",
-                  min = 0,
-                  max = 20,
-                  value = c(0, 3))
+      with(
+        defaults$ui$simulation$processes,
+        sliderInput("processes",
+                    "min and max processes:",
+                    min = min,
+                    max = max,
+                    value = value,
+                    step = step
+        )
+      )
     ),
     box(
       width = 3,
-      sliderInput("max_connections_per_process",
-                  "max connections per process:",
-                  min = 5,
-                  max = 50,
-                  step = 5,
-                  value = 20)
+      with(
+        defaults$ui$simulation$max_connections_per_process,
+        sliderInput("max_connections_per_process",
+                    "max connections per process:",
+                    min = min,
+                    max = max,
+                    value = value,
+                    step = step
+        )
+      )
     ),
     box(
       width = 3,
-      sliderInput("load_factor",
-                  "load factor:",
-                  min = 0,
-                  max = 1,
-                  value = 0.5,
-                  step = 0.1)
+      with(
+        defaults$ui$simulation$load_factor,
+        sliderInput("load_factor",
+                    "load factor:",
+                    min = min,
+                    max = max,
+                    value = value,
+                    step = step
+        )
+      )
     ),
     box(
       width = 3,
-      sliderInput("cpu",
-                  "cpu count:",
-                  min = 4,
-                  max = 32,
-                  step = 4,
-                  value = 8)
+      with(
+        defaults$ui$simulation$cpu,
+        sliderInput("cpu",
+                    "cpu count:",
+                    min = min,
+                    max = max,
+                    value = value,
+                    step = step
+        )
+      )
     ),
     # go button !!!
     box(width = 12, actionButton("go_button", "Go!")),

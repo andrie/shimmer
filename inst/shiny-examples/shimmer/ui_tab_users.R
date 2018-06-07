@@ -6,47 +6,63 @@ ui_tab_users <- tabItem(
     box(
       title = "Arrival of users",
       width = 6,
-      sliderInput("user_mean",
-                  "mean arrival time:",
-                  min = user_defaults$user_mean[1],
-                  max = user_defaults$user_mean[2],
-                  value = c(30)
+      with(
+        defaults$ui$users$user_mean,
+        sliderInput("user_mean",
+                    "mean arrival time:",
+                    min = min,
+                    max = max,
+                    value = value
+        )
       ),
-      sliderInput("user_shape",
-                  "shape:",
-                  min = 1,
-                  max = 50,
-                  value = 10
+      with(
+        defaults$ui$users$user_shape,
+        sliderInput("user_shape",
+                    "shape:",
+                    min = min,
+                    max = max,
+                    value = value
+        )
       )
     ),
     box(
       title = "Requests made by each user",
       width = 6,
-      sliderInput("request_mean",
-                  "mean arrival time:",
-                  min = user_defaults$request_mean[1],
-                  max = user_defaults$request_mean[2],
-                  value = c(10)
+      with(
+        defaults$ui$users$request_mean,
+        sliderInput("request_mean",
+                    "mean arrival time:",
+                    min = min,
+                    max = max,
+                    value = value
+        )
       ),
-      sliderInput("request_shape",
-                  "shape:",
-                  min = 1,
-                  max = 50,
-                  value = 10
+      with(
+        defaults$ui$users$request_shape,
+        sliderInput("request_shape",
+                    "shape:",
+                    min = min,
+                    max = max,
+                    value = value
+        )
       ),
-      sliderInput("request_number",
-                  "number of requests:",
-                  min = 1,
-                  max = 50,
-                  value = 10
+      with(
+        defaults$ui$users$request_number,
+        sliderInput("request_number",
+                    "number of requests:",
+                    min = min,
+                    max = max,
+                    value = value
+        )
       )
     )
   ),
   fluidRow(
     box(
       width = 6,
-      plotOutput("user_plot") %>%
-        shinycssloaders::withSpinner()
+      shinycssloaders::withSpinner(
+        plotOutput("user_plot")
+      )
     ),
     box(
       width = 6,

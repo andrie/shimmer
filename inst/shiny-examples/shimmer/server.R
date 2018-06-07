@@ -141,9 +141,11 @@ shinyServer(function(input, output) {
       )
     })
 
+    duration_ratio <- shimmer:::compute_duration_ratio(env, params()$app$response_time)
+
     output$duration_box <- renderValueBox({
-      adaptiveValueBox(0, "Duration", as_percent = TRUE, icon = icon("hourglass-end"),
-                       thresholds = c(0, 0.01)
+      adaptiveValueBox(duration_ratio, "Responsiveness", as_percent = TRUE, icon = icon("hourglass-end"),
+                       thresholds = c(0.9, 0.95), reverse = TRUE
       )
     })
 

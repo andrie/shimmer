@@ -17,13 +17,15 @@
 # read_timeout: 3600
 
 
-library(shiny)
-library(shinydashboard)
-library(magrittr)
-library(shinycssloaders)
+suppressPackageStartupMessages({
+  library(shiny)
+  library(shinydashboard)
+  library(magrittr)
+  library(shinycssloaders)
+  library(config)
+})
 
-
-
+defaults <- config::get(file = "defaults.yml")
 
 
 sidebar <-   dashboardSidebar(
@@ -42,8 +44,8 @@ source("ui_tab_simulation.R", local = TRUE)
 body <- dashboardBody(
   tabItems(
     ui_tab_app,
-    ui_tab_simulation,
-    ui_tab_users
+    ui_tab_users,
+    ui_tab_simulation
   )
 )
 
