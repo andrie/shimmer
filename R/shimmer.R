@@ -61,7 +61,7 @@ shimmer <- function(until = 3600, config, config_file) {
   TOTAL_CONNECTIONS <- 0
   ACTIVE_PROCESSES <-  0
 
-  rectified_rnorm <- function(n, mean = 0, sd = 1){
+  rectified_rnorm <- function(n = 1, mean = 0, sd = 1){
     max(0, stats::rnorm(n, mean, sd))
   }
 
@@ -160,7 +160,14 @@ shimmer <- function(until = 3600, config, config_file) {
     return(1)
   }
 
+  timeout_until_idle <- function(.trj){
+    user_timeout <- agamma(mean = USER$request$mean,
+                           shape = USER$request$shape)
+    actual_timeout <- min(user_timeout, SYSTEM$connection_timeout)
+    .trj %>%
+      timeout(function() actual_timeout)
 
+  }
 
   user <- trajectory("user") %>%
     seize("connection") %>%
@@ -172,14 +179,15 @@ shimmer <- function(until = 3600, config, config_file) {
     join(cpu) %>%
 
     # time out waiting for next request
-    timeout(function() agamma(1, mean = USER$request$mean, shape = USER$request$shape)) %>%
+    timeout(function() agamma(mean = USER$request$mean,
+                              shape = USER$request$shape)) %>%
     rollback(
       get_n_activities(cpu) + 1,
       times = USER$number_of_requests_per_user - 1
     ) %>%
 
     # time out for idle connection
-    timeout(function() rectified_rnorm(1, mean = USER$idle$mean, sd = USER$idle$sd)) %>%
+    timeout_until_idle() %>%
     release_selected() %>%
 
     release("connection")

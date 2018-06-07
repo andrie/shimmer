@@ -190,3 +190,20 @@ plot_shimmer_response_histogram <- function(.env, binwidth = 0.1){
     geom_histogram(binwidth = binwidth) +
     ggplot2::ggtitle("Response time")
 }
+
+compute_duration_ratio <- function(.env, expected){
+  assert_is_simmer(.env)
+  assert_that(is.numeric(expected))
+  .env %>%
+    get_mon_arrivals(per_resource = TRUE) %>%
+    dplyr::filter(resource == "cpu") %>%
+    dplyr::mutate(
+      duration = end_time - start_time,
+      in_time = duration <= expected
+      ) %>%
+    dplyr::summarize(
+      ratio = sum(in_time) / length(in_time)
+    ) %>%
+    .[["ratio"]]
+
+}
