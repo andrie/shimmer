@@ -7,7 +7,7 @@
 #' @param shape shape
 #'
 #' @export
-agamma <- function(n, mean, shape){
+agamma <- function(n = 1, mean, shape){
   # a = shape
   # s = scale
   # m = a*s  thus  s = m/a
