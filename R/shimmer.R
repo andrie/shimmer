@@ -77,10 +77,20 @@ shimmer <- function(until = 3600, config, config_file) {
 
   # CPU trajectory ----------------------------------------------------------
 
-  cpu <- trajectory("cpu") %>%
+  cput <- trajectory("cpu") %>%
     seize("cpu") %>%
     timeout(APP$response_time) %>%
     release("cpu")
+
+
+  request <- trajectory("request") %>%
+    select(function()
+      paste0("request_queue_", simmer::get_attribute(env, keys = "process")),
+      id = 2
+    ) %>%
+    seize_selected(id = 2) %>%
+    join(cput) %>%
+    release_selected(id = 2)
 
 
     # Controller ------------------------------------------------------------
@@ -102,6 +112,11 @@ shimmer <- function(until = 3600, config, config_file) {
         paste0("process_", i),
         capacity = RUNTIME$max_connections_per_process,
         queue_size = 0
+      ) %>%
+      add_resource(
+        paste0("request_queue_", i),
+        capacity = 1,
+        queue_size = Inf
       )
 
     ACTIVE_PROCESSES <<- i
@@ -205,13 +220,13 @@ shimmer <- function(until = 3600, config, config_file) {
       paste0("process_", simmer::get_attribute(env, keys = "process"))
     ) %>%
     seize_selected() %>%
-    join(cpu) %>%
+    join(request) %>%
 
     # time out waiting for next request
     timeout(function() agamma(mean = USER$request$mean,
                               shape = USER$request$shape)) %>%
     rollback(
-      get_n_activities(cpu) + 1,
+      get_n_activities(request) + 1,
       times = USER$number_of_requests_per_user - 1
     ) %>%
 
