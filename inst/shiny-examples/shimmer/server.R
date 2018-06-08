@@ -61,14 +61,6 @@ shinyServer(function(input, output) {
   })
 
   params <- reactive({
-
-    min_processes <- input[["processes"]][1]
-    max_processes <- input[["processes"]][2]
-    max_connections_per_process <- input[["max_connections_per_process"]]
-    load_factor <- input[["load_factor"]]
-
-    cpu <- input[["cpu"]]
-
     modifyList(
       params_default,
       list(
@@ -85,14 +77,14 @@ shinyServer(function(input, output) {
         ),
 
         system = list(
-          cpu = cpu
+          cpu = input[["cpu"]]
         ),
 
         runtime = list(
-          min_processes  = min_processes,
-          max_processes = max_processes,
-          max_connections_per_process = max_connections_per_process,
-          load_factor = load_factor
+          min_processes  = input[["processes"]][1],
+          max_processes = input[["processes"]][2],
+          max_connections_per_process = input[["max_connections_per_process"]],
+          load_factor = input[["load_factor"]]
         ),
 
         app = list(
