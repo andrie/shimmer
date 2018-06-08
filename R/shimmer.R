@@ -161,20 +161,49 @@ shimmer <- function(until = 3600, config, config_file) {
   }
 
   timeout_until_idle <- function(.trj){
-    user_timeout <- agamma(mean = USER$request$mean,
-                           shape = USER$request$shape)
-    actual_timeout <- min(user_timeout, SYSTEM$connection_timeout)
     .trj %>%
-      timeout(function() actual_timeout)
+      timeout(function(){
+        user_timeout <- agamma(mean = 1800,
+                               shape = 10)
+        min(user_timeout, SYSTEM$connection_timeout)
+      }
+      )
+  }
+
+
+  shortest_queue <- function(){
+    active <- simmer::get_mon_resources(env) %>%
+      dplyr::filter(grepl("process_", resource)) %>%
+      dplyr::mutate(queue = server + queue) %>%
+      dplyr::select(resource, queue) %>%
+      dplyr::group_by(resource) %>%
+      dplyr::slice(n()) %>%
+      dplyr::ungroup() %>%
+      dplyr::arrange(queue) %>%
+      .[["resource"]]
+
+    all <- get_active_process_names()
+    inactive <- setdiff(all, active)
+
+    if (length(all) == 0) return(1)
+
+    r <- ifelse(length(inactive) >= 1, inactive[1], active[1])
+
+    if (length(r) == 0) return(1)
+
+    z <- as.numeric(gsub("process_", "", r))
+    if (is.na(z)) 1 else z
 
   }
+
 
   user <- trajectory("user") %>%
     seize("connection") %>%
 
     # select process
-    select(resources = function()get_active_process_names(),
-           policy = "shortest-queue") %>%
+    select(function()
+      paste0("process_", simmer::get_attribute(env, keys = "process"))
+    ) %>%
     seize_selected() %>%
     join(cpu) %>%
 
@@ -197,6 +226,7 @@ shimmer <- function(until = 3600, config, config_file) {
   # exists to count the total number of connections and rejections.
 
   user_accounting <- trajectory("accounting") %>%
+    simmer::set_attribute(keys = "process", values = function()shortest_queue()) %>%
     seize("connection_request",
           amount = inc_active_connections,
           continue = FALSE,
@@ -237,6 +267,7 @@ shimmer <- function(until = 3600, config, config_file) {
     add_generator("controller",
                   controller, at(0)) %>%
     add_generator("user_accounting", user_accounting,
+                  mon = 1,
                   distribution = function() {
                     agamma(1, shape = USER$arrival$shape, mean = USER$arrival$mean)
                   }
