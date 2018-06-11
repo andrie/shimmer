@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# shimmer
+# shimmer <img src="man/figures/logo_small.png" align="right" />
 
 [![lifecycle](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
 
@@ -85,9 +85,9 @@ The contents of this file:
       user:
         arrival:
           comment: Arrival time between users (seconds)
-          mean: 30.0
+          mean: 10.0
           shape: 5.0
-        number_of_requests_per_user: 1.0
+        number_of_requests_per_user: 20.0
         request:
           comment: Mean arrival time between requests for a given user (seconds)
           mean: 10.0
@@ -116,16 +116,19 @@ env <- shimmer()
 env
 #> simmer environment: Shiny | now: 3600 | next: 3600
 #> { Monitor: in memory }
-#> { Resource: connection_request | monitored: TRUE | server status: 52(60) | queue status: 0(0) }
-#> { Resource: total_connections | monitored: TRUE | server status: 111(Inf) | queue status: 0(0) }
-#> { Resource: rejections | monitored: TRUE | server status: 9(Inf) | queue status: 0(0) }
-#> { Resource: connection | monitored: TRUE | server status: 52(60) | queue status: 0(Inf) }
-#> { Resource: cpu | monitored: TRUE | server status: 0(4) | queue status: 0(Inf) }
-#> { Resource: process_1 | monitored: TRUE | server status: 18(20) | queue status: 0(0) }
-#> { Resource: process_2 | monitored: TRUE | server status: 19(20) | queue status: 0(0) }
-#> { Resource: process_3 | monitored: TRUE | server status: 15(20) | queue status: 0(0) }
+#> { Resource: connection_request | monitored: TRUE | server status: 60(60) | queue status: 0(0) }
+#> { Resource: total_connections | monitored: TRUE | server status: 123(Inf) | queue status: 0(0) }
+#> { Resource: rejections | monitored: TRUE | server status: 243(Inf) | queue status: 0(0) }
+#> { Resource: connection | monitored: TRUE | server status: 60(60) | queue status: 0(Inf) }
+#> { Resource: cpu | monitored: TRUE | server status: 1(4) | queue status: 0(Inf) }
+#> { Resource: process_1 | monitored: TRUE | server status: 20(20) | queue status: 0(0) }
+#> { Resource: request_queue_1 | monitored: TRUE | server status: 0(1) | queue status: 0(Inf) }
+#> { Resource: process_2 | monitored: TRUE | server status: 20(20) | queue status: 0(0) }
+#> { Resource: request_queue_2 | monitored: TRUE | server status: 1(1) | queue status: 1(Inf) }
+#> { Resource: process_3 | monitored: TRUE | server status: 20(20) | queue status: 0(0) }
+#> { Resource: request_queue_3 | monitored: TRUE | server status: 0(1) | queue status: 0(Inf) }
 #> { Source: controller | monitored: 1 | n_generated: 1 }
-#> { Source: user_accounting | monitored: 1 | n_generated: 121 }
+#> { Source: user_accounting | monitored: 1 | n_generated: 367 }
 ```
 
 ## Plots
