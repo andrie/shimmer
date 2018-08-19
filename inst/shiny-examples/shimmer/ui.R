@@ -29,12 +29,16 @@ suppressPackageStartupMessages({
 
 sidebar <-   dashboardSidebar(
   sidebarMenu(
-    menuItem("App", tabName = "app", icon = icon("laptop")),
-    menuItem("Users", tabName = "users", icon = icon("users")),
-    menuItem("Simulation", tabName = "simulation", icon = icon("dashboard"))
+    id = "sidebar_tabs",
+    menuItem("Instructions", tabName = "instructions", icon = icon("info")),
+    menuItem("Step 1: App assumptions", tabName = "app", icon = icon("laptop")),
+    menuItem("Step 2: Users assumptions", tabName = "users", icon = icon("users")),
+    menuItem("Step 3: Simulate", tabName = "simulation", icon = icon("dashboard"))
   )
 )
 
+
+source("ui_tab_instructions.R", local = TRUE)
 source("ui_tab_app.R", local = TRUE)
 source("ui_tab_users.R", local = TRUE)
 source("ui_tab_simulation.R", local = TRUE)
@@ -42,6 +46,7 @@ source("ui_tab_simulation.R", local = TRUE)
 
 body <- dashboardBody(
   tabItems(
+    ui_tab_instructions,
     ui_tab_app,
     ui_tab_users,
     ui_tab_simulation

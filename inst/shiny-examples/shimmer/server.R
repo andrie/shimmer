@@ -20,7 +20,7 @@ suppressPackageStartupMessages({
 
 
 # Define server logic required to draw a histogram
-shinyServer(function(input, output) {
+shinyServer(function(session, input, output) {
 
 
   params_default <- yaml::read_yaml("config.yml")[["default"]]
@@ -60,40 +60,6 @@ shinyServer(function(input, output) {
       xlab("Time")
   })
 
-  params <- reactive({
-    modifyList(
-      params_default,
-      list(
-        user = list(
-          arrival = list(
-            mean = input[["user_mean"]],
-            shape = input[["user_shape"]]
-          ),
-          number_of_requests_per_user = input[["request_number"]],
-          request = list(
-            mean = input[["request_mean"]],
-            shape = input[["request_shape"]]
-          )
-        ),
-
-        system = list(
-          cpu = input[["cpu"]]
-        ),
-
-        runtime = list(
-          min_processes  = input[["processes"]][1],
-          max_processes = input[["processes"]][2],
-          max_connections_per_process = input[["max_connections_per_process"]],
-          load_factor = input[["load_factor"]]
-        ),
-
-        app = list(
-          startup_time = input[["app_startup_time"]],
-          response_time = input[["app_response_time"]]
-        )
-      )
-    )
-  })
 
 
 
@@ -116,16 +82,63 @@ shinyServer(function(input, output) {
 
   }
 
+  observeEvent(input$switch_to_app, {
+    updateTabItems(session, "sidebar_tabs", "app")
+  })
+  observeEvent(input$switch_to_users, {
+    updateTabItems(session, "sidebar_tabs", "users")
+  })
+  observeEvent(input$switch_to_simulation, {
+    updateTabItems(session, "sidebar_tabs", "simulation")
+  })
+
   observeEvent(input[["go_button"]], {
+    params <- reactive({
+      modifyList(
+        params_default,
+        list(
+          user = list(
+            arrival = list(
+              mean = input[["user_mean"]],
+              shape = input[["user_shape"]]
+            ),
+            number_of_requests_per_user = input[["request_number"]],
+            request = list(
+              mean = input[["request_mean"]],
+              shape = input[["request_shape"]]
+            )
+          ),
+
+          system = list(
+            cpu = input[["cpu"]]
+          ),
+
+          runtime = list(
+            min_processes  = input[["processes"]][1],
+            max_processes = input[["processes"]][2],
+            max_connections_per_process = input[["max_connections_per_process"]],
+            load_factor = input[["load_factor"]]
+          ),
+
+          app = list(
+            startup_time = input[["app_startup_time"]],
+            response_time = input[["app_response_time"]]
+          )
+        )
+      )
+    })
 
     env <- shimmer(config = params())
 
 
     # First row of value boxes
 
-    cpu_ratio <- env %>% fast_server_usage_summary("cpu", summarize = TRUE) %>% .$mean
+    cpu_ratio <- env %>%
+      fast_server_usage_summary("cpu", summarize = TRUE) %>% .$mean
+
     output$cpu_box <- renderValueBox({
-      adaptiveValueBox(cpu_ratio, "CPU usage", as_percent = TRUE, icon = icon("microchip"),
+      adaptiveValueBox(cpu_ratio, "CPU usage", as_percent = TRUE,
+                       icon = icon("microchip"),
                        thresholds = c(0.7, 0.85),
                        reverse = FALSE
       )
@@ -136,15 +149,20 @@ shinyServer(function(input, output) {
     reject_ratio <- rejections / (rejections + connections)
 
     output$rejection_box <- renderValueBox({
-      adaptiveValueBox(reject_ratio, "Rejection rate", as_percent = TRUE, icon = icon("ban"),
+      adaptiveValueBox(reject_ratio, "Rejection rate", as_percent = TRUE,
+                       icon = icon("ban"),
                        thresholds = c(0, 0.01)
       )
     })
 
-    duration_ratio <- shimmer:::compute_duration_ratio(env, params()$app$response_time)
+    duration_ratio <- shimmer:::compute_duration_ratio(
+      env,
+      params()$app$response_time
+    )
 
     output$duration_box <- renderValueBox({
-      adaptiveValueBox(duration_ratio, "Responsiveness", as_percent = TRUE, icon = icon("hourglass-end"),
+      adaptiveValueBox(duration_ratio, "Responsiveness", as_percent = TRUE,
+                       icon = icon("hourglass-end"),
                        thresholds = c(0.9, 0.95), reverse = TRUE
       )
     })

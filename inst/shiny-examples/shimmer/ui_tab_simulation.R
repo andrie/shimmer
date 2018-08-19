@@ -21,12 +21,13 @@ ui_tab_simulation <- tabItem(
       with(
         defaults$ui$simulation$max_connections_per_process,
         sliderInput("max_connections_per_process",
-                    "max connections per process:",
+                    "max conns per process:",
                     min = min,
                     max = max,
                     value = value,
                     step = step
-        )
+        ),
+        helpText("foo")
       )
     ),
     box(

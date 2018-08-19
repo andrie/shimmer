@@ -1,5 +1,3 @@
-
-
 ui_tab_app <- tabItem(
   tabName = "app",
   fluidRow(
@@ -9,21 +7,25 @@ ui_tab_app <- tabItem(
       with(
         defaults$ui$app$app_startup_time,
         sliderInput("app_startup_time",
-                    "App startup time:",
+                    "App startup time (seconds):",
                     min = min,
                     max = max,
                     value = value
         )
       ),
+      helpText("App startup time is the time (in seconds) that it takes the app to start, i.e. the amount of time the user waits for the first response"),
       with(
         defaults$ui$app$app_response_time,
         sliderInput("app_response_time",
-                    "App response time:",
+                    "App response time (seconds):",
                     min = min,
                     max = max,
                     value = value
         )
-      )
+      ),
+      helpText("App response time is the amount of time the user waits for a typical response"),
+      actionButton('switch_to_users', 'Go to user settings', icon = icon("users"))
     )
   )
 )
+
