@@ -6,7 +6,7 @@ intro_text <- p(
 )
 
 using_text <- p(
-"To use this app, complete your measurement or assumptions for (1) ", em("app"), " and (2) ", em("users"), ",then run the simulation using the ", em("simulate"), " tab."
+"To use this app, complete your measurement or assumptions for ", em("Step 1: App assumptions"), " and ", em("Step 2: Users assumptions"), ",then run the simulation using the ", em("Step 3: Simulate"), " tab."
 )
 
 ui_tab_instructions <- tabItem(
@@ -19,6 +19,10 @@ ui_tab_instructions <- tabItem(
       helpText(""),
       helpText(using_text)
     ),
-    actionButton('switch_to_app', 'Go to app settings', icon = icon("laptop"))
+    box(
+      actionButton('switch_to_app', ' Step 1: App assumptions', icon = icon("laptop")),
+      width = 18
+    )
+
   )
 )

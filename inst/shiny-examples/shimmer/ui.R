@@ -45,6 +45,9 @@ source("ui_tab_simulation.R", local = TRUE)
 
 
 body <- dashboardBody(
+  tags$head(
+    tags$link(rel = "stylesheet", type = "text/css", href = "custom.css")
+  ),
   tabItems(
     ui_tab_instructions,
     ui_tab_app,

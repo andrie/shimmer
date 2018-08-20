@@ -57,7 +57,10 @@ ui_tab_simulation <- tabItem(
       )
     ),
     # go button !!!
-    box(width = 12, actionButton("go_button", "Go!")),
+    box(
+      width = 12,
+      actionButton("go_button", " Go!", icon = icon("dashboard"))
+    ),
 
     # first row of output with value boxes
 
