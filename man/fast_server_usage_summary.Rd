@@ -18,5 +18,7 @@ compuation}
 Rapidly computes a resource usage summary.
 }
 \seealso{
-Other resource summary functions: \code{\link{last_resource_value}}
+Other resource summary functions: 
+\code{\link{last_resource_value}()}
 }
+\concept{resource summary functions}

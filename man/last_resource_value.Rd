@@ -15,5 +15,7 @@ last_resource_value(.env, name)
 Extracts last available value of a resource
 }
 \seealso{
-Other resource summary functions: \code{\link{fast_server_usage_summary}}
+Other resource summary functions: 
+\code{\link{fast_server_usage_summary}()}
 }
+\concept{resource summary functions}

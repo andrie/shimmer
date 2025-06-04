@@ -13,10 +13,12 @@ plot_shimmer_usage(.env)
 Plot shimmer resource usage
 }
 \seealso{
-Other plot functions: \code{\link{plot_shimmer_connection_usage}},
-  \code{\link{plot_shimmer_cpu_usage}},
-  \code{\link{plot_shimmer_process_usage}},
-  \code{\link{plot_shimmer_rejection_usage}},
-  \code{\link{plot_shimmer_resources}},
-  \code{\link{plot_shimmer_response_histogram}}
+Other plot functions: 
+\code{\link{plot_shimmer_connection_usage}()},
+\code{\link{plot_shimmer_cpu_usage}()},
+\code{\link{plot_shimmer_process_usage}()},
+\code{\link{plot_shimmer_rejection_usage}()},
+\code{\link{plot_shimmer_resources}()},
+\code{\link{plot_shimmer_response_histogram}()}
 }
+\concept{plot functions}

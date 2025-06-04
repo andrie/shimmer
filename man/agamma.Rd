@@ -4,7 +4,7 @@
 \alias{agamma}
 \title{Alternative formulation of rgamma function, supplying  mean and shape.}
 \usage{
-agamma(n, mean, shape)
+agamma(n = 1, mean, shape)
 }
 \arguments{
 \item{n}{Number of observations, passed to \code{\link[=rgamma]{rgamma()}}}

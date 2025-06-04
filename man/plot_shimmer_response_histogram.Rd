@@ -15,10 +15,12 @@ plot_shimmer_response_histogram(.env, binwidth = 0.1)
 Plot histogram of CPU response times
 }
 \seealso{
-Other plot functions: \code{\link{plot_shimmer_connection_usage}},
-  \code{\link{plot_shimmer_cpu_usage}},
-  \code{\link{plot_shimmer_process_usage}},
-  \code{\link{plot_shimmer_rejection_usage}},
-  \code{\link{plot_shimmer_resources}},
-  \code{\link{plot_shimmer_usage}}
+Other plot functions: 
+\code{\link{plot_shimmer_connection_usage}()},
+\code{\link{plot_shimmer_cpu_usage}()},
+\code{\link{plot_shimmer_process_usage}()},
+\code{\link{plot_shimmer_rejection_usage}()},
+\code{\link{plot_shimmer_resources}()},
+\code{\link{plot_shimmer_usage}()}
 }
+\concept{plot functions}

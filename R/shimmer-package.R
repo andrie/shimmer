@@ -1,7 +1,7 @@
 #' Discrete Event Simulation for Scaling Shiny, Using the Simmer Package
 #'
+"_PACKAGE"
 #' @name shimmer-package
-#' @docType package
 #'
 #' @importFrom config get
 #' @importFrom assertthat assert_that

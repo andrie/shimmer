@@ -5,5 +5,11 @@
 \alias{shimmer-package}
 \title{Discrete Event Simulation for Scaling Shiny, Using the Simmer Package}
 \description{
-Discrete Event Simulation for Scaling Shiny, Using the Simmer Package
+\if{html}{\figure{logo.png}{options: style='float: right' alt='logo' width='120'}}
+
+Discrete Event Simulation for Shiny, Using the Simmer Package.
+}
+\author{
+\strong{Maintainer}: Andrie de Vries \email{apdevries@gmail.com} [copyright holder]
+
 }
