@@ -16,7 +16,6 @@
 # connection_timeout: 3600
 # read_timeout: 3600
 
-
 suppressPackageStartupMessages({
   library(shiny)
   library(shinydashboard)
@@ -26,14 +25,21 @@ suppressPackageStartupMessages({
 })
 
 
-
-sidebar <-   dashboardSidebar(
+sidebar <- dashboardSidebar(
   sidebarMenu(
     id = "sidebar_tabs",
     menuItem("Instructions", tabName = "instructions", icon = icon("info")),
     menuItem("Step 1: App assumptions", tabName = "app", icon = icon("laptop")),
-    menuItem("Step 2: Users assumptions", tabName = "users", icon = icon("users")),
-    menuItem("Step 3: Simulate", tabName = "simulation", icon = icon("dashboard"))
+    menuItem(
+      "Step 2: Users assumptions",
+      tabName = "users",
+      icon = icon("users")
+    ),
+    menuItem(
+      "Step 3: Simulate",
+      tabName = "simulation",
+      icon = icon("dashboard")
+    )
   )
 )
 
@@ -62,6 +68,3 @@ dashboardPage(
   sidebar,
   body
 )
-
-
-

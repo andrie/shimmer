@@ -18,17 +18,13 @@ suppressPackageStartupMessages({
 })
 
 
-
 # Define server logic required to draw a histogram
 shinyServer(function(session, input, output) {
-
-
   params_default <- yaml::read_yaml("config.yml")[["default"]]
 
   # User tab ----
 
   output$user_plot <- renderPlot({
-
     shape <- input[["user_shape"]]
     mean <- input[["user_mean"]]
 
@@ -60,15 +56,19 @@ shinyServer(function(session, input, output) {
       xlab("Time")
   })
 
-
-
-
   # Dashboard tab ----
 
-  adaptiveValueBox <- function(value, subtitle, as_percent = FALSE, icon = NULL,
-                               colors = c("blue", "orange", "red"),
-                               thresholds, reverse = FALSE, width = 4, href = NULL)
-  {
+  adaptiveValueBox <- function(
+    value,
+    subtitle,
+    as_percent = FALSE,
+    icon = NULL,
+    colors = c("blue", "orange", "red"),
+    thresholds,
+    reverse = FALSE,
+    width = 4,
+    href = NULL
+  ) {
     to_percent <- function(x) sprintf("%1.1f%%", x * 100)
     if (reverse) colors <- rev(colors)
     color <- dplyr::case_when(
@@ -77,9 +77,14 @@ shinyServer(function(session, input, output) {
       value >= thresholds[2] ~ colors[3]
     )
     if (as_percent) value <- to_percent(value)
-    shinydashboard::valueBox(value = value, subtitle = subtitle, icon = icon,
-                             color = color, width = width, href = href)
-
+    shinydashboard::valueBox(
+      value = value,
+      subtitle = subtitle,
+      icon = icon,
+      color = color,
+      width = width,
+      href = href
+    )
   }
 
   observeEvent(input$switch_to_app, {
@@ -114,9 +119,11 @@ shinyServer(function(session, input, output) {
           ),
 
           runtime = list(
-            min_processes  = input[["processes"]][1],
+            min_processes = input[["processes"]][1],
             max_processes = input[["processes"]][2],
-            max_connections_per_process = input[["max_connections_per_process"]],
+            max_connections_per_process = input[[
+              "max_connections_per_process"
+            ]],
             load_factor = input[["load_factor"]]
           ),
 
@@ -130,17 +137,20 @@ shinyServer(function(session, input, output) {
 
     env <- shimmer(config = params())
 
-
     # First row of value boxes
 
     cpu_ratio <- env %>%
-      fast_server_usage_summary("cpu", summarize = TRUE) %>% .$mean
+      fast_server_usage_summary("cpu", summarize = TRUE) %>%
+      .$mean
 
     output$cpu_box <- renderValueBox({
-      adaptiveValueBox(cpu_ratio, "CPU usage", as_percent = TRUE,
-                       icon = icon("microchip"),
-                       thresholds = c(0.7, 0.85),
-                       reverse = FALSE
+      adaptiveValueBox(
+        cpu_ratio,
+        "CPU usage",
+        as_percent = TRUE,
+        icon = icon("microchip"),
+        thresholds = c(0.7, 0.85),
+        reverse = FALSE
       )
     })
 
@@ -149,9 +159,12 @@ shinyServer(function(session, input, output) {
     reject_ratio <- rejections / (rejections + connections)
 
     output$rejection_box <- renderValueBox({
-      adaptiveValueBox(reject_ratio, "Rejection rate", as_percent = TRUE,
-                       icon = icon("ban"),
-                       thresholds = c(0, 0.01)
+      adaptiveValueBox(
+        reject_ratio,
+        "Rejection rate",
+        as_percent = TRUE,
+        icon = icon("ban"),
+        thresholds = c(0, 0.01)
       )
     })
 
@@ -161,14 +174,17 @@ shinyServer(function(session, input, output) {
     )
 
     output$duration_box <- renderValueBox({
-      adaptiveValueBox(duration_ratio, "Responsiveness", as_percent = TRUE,
-                       icon = icon("hourglass-end"),
-                       thresholds = c(0.9, 0.95), reverse = TRUE
+      adaptiveValueBox(
+        duration_ratio,
+        "Responsiveness",
+        as_percent = TRUE,
+        icon = icon("hourglass-end"),
+        thresholds = c(0.9, 0.95),
+        reverse = TRUE
       )
     })
 
     # Second row of plots
-
 
     output$cpu_usage_plot <- renderPlot({
       plot_shimmer_cpu_usage(env)
@@ -188,8 +204,5 @@ shinyServer(function(session, input, output) {
     output$process_usage_plot <- renderPlot({
       plot_shimmer_process_usage(env)
     })
-
   })
-
-
 })

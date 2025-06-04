@@ -7,12 +7,13 @@ ui_tab_simulation <- tabItem(
       width = 3,
       with(
         defaults$ui$simulation$processes,
-        sliderInput("processes",
-                    "min and max processes:",
-                    min = min,
-                    max = max,
-                    value = value,
-                    step = step
+        sliderInput(
+          "processes",
+          "min and max processes:",
+          min = min,
+          max = max,
+          value = value,
+          step = step
         )
       )
     ),
@@ -20,12 +21,13 @@ ui_tab_simulation <- tabItem(
       width = 3,
       with(
         defaults$ui$simulation$max_connections_per_process,
-        sliderInput("max_connections_per_process",
-                    "max conns per process:",
-                    min = min,
-                    max = max,
-                    value = value,
-                    step = step
+        sliderInput(
+          "max_connections_per_process",
+          "max conns per process:",
+          min = min,
+          max = max,
+          value = value,
+          step = step
         ),
         helpText("foo")
       )
@@ -34,12 +36,13 @@ ui_tab_simulation <- tabItem(
       width = 3,
       with(
         defaults$ui$simulation$load_factor,
-        sliderInput("load_factor",
-                    "load factor:",
-                    min = min,
-                    max = max,
-                    value = value,
-                    step = step
+        sliderInput(
+          "load_factor",
+          "load factor:",
+          min = min,
+          max = max,
+          value = value,
+          step = step
         )
       )
     ),
@@ -47,12 +50,13 @@ ui_tab_simulation <- tabItem(
       width = 3,
       with(
         defaults$ui$simulation$cpu,
-        sliderInput("cpu",
-                    "cpu count:",
-                    min = min,
-                    max = max,
-                    value = value,
-                    step = step
+        sliderInput(
+          "cpu",
+          "cpu count:",
+          min = min,
+          max = max,
+          value = value,
+          step = step
         )
       )
     ),
@@ -107,6 +111,5 @@ ui_tab_simulation <- tabItem(
         )
       )
     )
-
   )
 )

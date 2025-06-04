@@ -1,8 +1,16 @@
 globalVariables(
   c(
-    ".", "resource", "end_time", "start_time", "duration",
-    "replication", "time","util", "cum_util",
-    "capacity", "server"
+    ".",
+    "resource",
+    "end_time",
+    "start_time",
+    "duration",
+    "replication",
+    "time",
+    "util",
+    "cum_util",
+    "capacity",
+    "server"
   )
 )
 
@@ -14,7 +22,7 @@ globalVariables(
 #' @export
 #' @family plot functions
 #'
-plot_shimmer_resources <- function(.env){
+plot_shimmer_resources <- function(.env) {
   assert_is_simmer(.env)
   .env %>%
     get_mon_resources() %>%
@@ -32,14 +40,12 @@ plot_shimmer_resources <- function(.env){
 #' @importFrom ggplot2 theme facet_grid
 #' @importFrom graphics plot
 #'
-plot_shimmer_usage <- function(.env){
+plot_shimmer_usage <- function(.env) {
   assert_is_simmer(.env)
   .env %>%
     get_mon_resources() %>%
     .[.$resource != "connection_request", ] %>%
-    plot(metric = "usage",
-         steps = FALSE,
-         items = c("server", "queue")) +
+    plot(metric = "usage", steps = FALSE, items = c("server", "queue")) +
     facet_grid(resource ~ ., scales = "free_y") +
     theme(legend.position = "none")
 }
@@ -53,7 +59,7 @@ plot_shimmer_usage <- function(.env){
 #'
 #' @importFrom ggplot2 geom_line stat_smooth scale_y_continuous ylab ggtitle geom_point
 #'
-plot_shimmer_cpu_usage <- function(.env){
+plot_shimmer_cpu_usage <- function(.env) {
   assert_is_simmer(.env)
   .env %>%
     fast_server_usage_summary("cpu") %>%
@@ -73,20 +79,17 @@ plot_shimmer_cpu_usage <- function(.env){
 #' @export
 #' @family plot functions
 #'
-plot_shimmer_connection_usage <- function(.env){
+plot_shimmer_connection_usage <- function(.env) {
   assert_is_simmer(.env)
   .env %>%
     get_mon_resources() %>%
     .[.$resource %in% c("connection"), ] %>%
-    plot(metric = "usage",
-         steps = TRUE,
-         items = c("server")) +
+    plot(metric = "usage", steps = TRUE, items = c("server")) +
     theme(
       legend.position = "none",
       strip.text.x = ggplot2::element_blank()
     ) +
     ggplot2::ggtitle("Active connections")
-
 }
 
 #' Plot shimmer rejections
@@ -96,7 +99,7 @@ plot_shimmer_connection_usage <- function(.env){
 #' @export
 #' @family plot functions
 #'
-plot_shimmer_rejection_usage <- function(.env){
+plot_shimmer_rejection_usage <- function(.env) {
   assert_is_simmer(.env)
   resources <- .env %>%
     get_mon_resources()
@@ -124,9 +127,7 @@ plot_shimmer_rejection_usage <- function(.env){
   rejections[1, "system"] <- 0
 
   p <- rejections %>%
-    plot(metric = "usage",
-         steps = TRUE,
-         items = c("server")) +
+    plot(metric = "usage", steps = TRUE, items = c("server")) +
     theme(
       legend.position = "none",
       strip.text.x = ggplot2::element_blank()
@@ -137,7 +138,6 @@ plot_shimmer_rejection_usage <- function(.env){
     p <- p + ggplot2::scale_y_continuous(breaks = 0:10, limits = c(0, 10))
   }
   p
-
 }
 
 
@@ -148,7 +148,7 @@ plot_shimmer_rejection_usage <- function(.env){
 #' @export
 #' @family plot functions
 #'
-plot_shimmer_process_usage <- function(.env){
+plot_shimmer_process_usage <- function(.env) {
   assert_is_simmer(.env)
   resources <- .env %>%
     get_mon_resources() %>%
@@ -160,15 +160,13 @@ plot_shimmer_process_usage <- function(.env){
   resources$resource <- factor(resources$resource, levels = levels)
 
   resources %>%
-    plot(metric = "usage",
-         steps = TRUE,
-         items = c("server")) +
+    plot(metric = "usage", steps = TRUE, items = c("server")) +
     facet_grid(resource ~ ., scales = "free_y") +
-    theme(legend.position = "none",
-          strip.text.y = ggplot2::element_text(angle = 0)
+    theme(
+      legend.position = "none",
+      strip.text.y = ggplot2::element_text(angle = 0)
     ) +
     ggplot2::ggtitle("Connections per process")
-
 }
 
 
@@ -180,7 +178,7 @@ plot_shimmer_process_usage <- function(.env){
 #' @export
 #' @family plot functions
 #'
-plot_shimmer_response_histogram <- function(.env, binwidth = 0.1){
+plot_shimmer_response_histogram <- function(.env, binwidth = 0.1) {
   assert_is_simmer(.env)
   .env %>%
     get_mon_arrivals(per_resource = TRUE) %>%
@@ -191,7 +189,7 @@ plot_shimmer_response_histogram <- function(.env, binwidth = 0.1){
     ggplot2::ggtitle("Response time")
 }
 
-compute_duration_ratio <- function(.env, expected){
+compute_duration_ratio <- function(.env, expected) {
   assert_is_simmer(.env)
   assert_that(is.numeric(expected))
   .env %>%
@@ -200,10 +198,9 @@ compute_duration_ratio <- function(.env, expected){
     dplyr::mutate(
       duration = end_time - start_time,
       in_time = duration <= expected
-      ) %>%
+    ) %>%
     dplyr::summarize(
       ratio = sum(in_time) / length(in_time)
     ) %>%
     .[["ratio"]]
-
 }

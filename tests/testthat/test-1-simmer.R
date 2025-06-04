@@ -3,7 +3,6 @@ if (interactive()) library(testthat)
 context("shimmer")
 
 test_that("shimmer() returns an env", {
-
   conf_file <- shimmer_config_file()
   expect_true(file.exists(conf_file))
 
@@ -22,17 +21,13 @@ test_that("shimmer() returns an env", {
   z <- shimmer(100, config_file = conf_file)
   expect_is(z, "simmer")
 
-
   set.seed(1)
-  z <- shimmer(100, config = yaml::read_yaml(conf_file)$default )
+  z <- shimmer(100, config = yaml::read_yaml(conf_file)$default)
   expect_is(z, "simmer")
-
-
 })
 
 
 test_that("plotting shimmer() returns ggplot objects", {
-
   set.seed(1)
   z <- shimmer(100)
 
@@ -58,9 +53,4 @@ test_that("plotting shimmer() returns ggplot objects", {
 
   p <- plot_shimmer_usage(z)
   expect_is(p, "ggplot")
-
 })
-
-
-
-

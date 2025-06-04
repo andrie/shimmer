@@ -15,7 +15,6 @@ last_resource_value <- function(.env, name) {
 }
 
 
-
 #' Rapidly computes a resource usage summary.
 #'
 #' @inheritParams plot_shimmer_resources
@@ -27,11 +26,15 @@ last_resource_value <- function(.env, name) {
 #' @family resource summary functions
 #' @export
 fast_server_usage_summary <- function(.env, name, summarize = FALSE) {
-
   p <- .env %>%
     simmer.plot::get_mon_resources() %>%
     dplyr::filter(resource == name) %>%
-    dplyr::select(dplyr::one_of(c("replication", "time", "server", "capacity"))) %>%
+    dplyr::select(dplyr::one_of(c(
+      "replication",
+      "time",
+      "server",
+      "capacity"
+    ))) %>%
     dplyr::group_by(replication) %>%
     dplyr::mutate(
       difftime = c(0, diff(time)),
@@ -39,10 +42,10 @@ fast_server_usage_summary <- function(.env, name, summarize = FALSE) {
       cum_util = cumsum(util * difftime) / time
     )
 
-  if (summarize) p <- p %>%
-    dplyr::summarize(mean = tail(cum_util, 1))
+  if (summarize)
+    p <- p %>%
+      dplyr::summarize(mean = tail(cum_util, 1))
 
   p %>%
     dplyr::ungroup()
-
 }
