@@ -5,8 +5,8 @@ account: revoandrie
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 351428
-bundleId: 1401534
+bundleId: 1543812
 url: https://revoandrie.shinyapps.io/Shimmer_and_Shiny/
-when: 1527718261.62088
+when: 1534752919.15341
 asMultiple: FALSE
 asStatic: FALSE
