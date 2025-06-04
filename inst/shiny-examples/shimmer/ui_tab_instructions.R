@@ -4,7 +4,7 @@ intro_text <- p(
   "package contains a discrete event simulation that explores how ",
   code("shiny"),
   " processes behave at scale, typically orchestrated by ",
-  strong("RStudio Connect"),
+  strong("Posit Connect"),
   " or ",
   strong("Shiny Server Pro."),
   br(),
