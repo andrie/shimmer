@@ -14,12 +14,13 @@ suppressPackageStartupMessages({
   library(shimmer)
   library(shinycssloaders)
   library(magrittr)
+  library(dplyr)
   box <- shinydashboard::box
 })
 
 
 # Define server logic required to draw a histogram
-shinyServer(function(session, input, output) {
+function(session, input, output) {
   params_default <- yaml::read_yaml("config.yml")[["default"]]
 
   # User tab ----
@@ -205,4 +206,4 @@ shinyServer(function(session, input, output) {
       plot_shimmer_process_usage(env)
     })
   })
-})
+}

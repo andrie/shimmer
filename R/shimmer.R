@@ -178,6 +178,7 @@ shimmer <- function(until = 3600, config, config_file) {
   }
 
   shortest_queue <- function() {
+    browser()
     active <- simmer::get_mon_resources(env) %>%
       dplyr::filter(grepl("process_", resource)) %>%
       dplyr::mutate(queue = server + queue) %>%
